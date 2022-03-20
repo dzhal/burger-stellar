@@ -7,7 +7,7 @@ import { dataImport } from '../../utils/data';
 import { types } from '../../utils/types';
 
 function BurgerConstructor() {
-    const isBun = dataImport.find(item => item.type === types.BUN);
+    const bun = dataImport.find(item => item.type === types.BUN);
     return (
         <>
             <div className={`${style.container}`}>
@@ -16,9 +16,9 @@ function BurgerConstructor() {
                         <ConstructorElement
                             type="top"
                             isLocked={true}
-                            text={isBun ? `${isBun.name} (верх)` : ''}
-                            price={isBun ? isBun.price : 0}
-                            thumbnail={isBun ? isBun.image : ''}
+                            text={bun ? `${bun.name} (верх)` : ''}
+                            price={bun ? bun.price : 0}
+                            thumbnail={bun ? bun.image : ''}
                         />
                     </div>
                     <div className={`${style.ingredientSubList}`}>
@@ -40,16 +40,16 @@ function BurgerConstructor() {
                         <ConstructorElement
                             type="bottom"
                             isLocked={true}
-                            text={isBun ? `${isBun.name} (низ)` : ''}
-                            price={isBun ? isBun.price : 0}
-                            thumbnail={isBun ? isBun.image : ''}
+                            text={bun ? `${bun.name} (низ)` : ''}
+                            price={bun ? bun.price : 0}
+                            thumbnail={bun ? bun.image : ''}
                         />
                     </div>
                 </div>
                 <div className={`${style.order} mr-4`}>
                     <div className={`${style.totalPrice}`}>
                         <div className={`${style.sum} text text_type_digits-medium mr-2 pr-4`}>
-                            {dataImport.reduce((sum, {price}) => sum + price, 0) + (isBun ? isBun.price : 0)}
+                            {dataImport.reduce((sum, {price}) => sum + price, 0) + (bun ? bun.price : 0)}
                         </div>
                         <CurrencyIcon type="primary" />
                     </div>
