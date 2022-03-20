@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredients.module.css';
-import Ingredient from '../ingredient/ingredient';
-import PropTypes from 'prop-types';
+import IngredientList from '../ingredient-list/ingredient-list';
 import { dataImport } from '../../utils/data';
+import { types } from '../../utils/types';
 
 function BurgerIngredients() {
     const [currentTab, setCurrentTab] = useState('bunRef');
@@ -55,11 +55,11 @@ function BurgerIngredients() {
                 </div>
                 <section className={`${style.ingredientsList} mt-10`}>
                     <h2 ref={bunRef} className='text text_type_main-medium'>Булки</h2>
-                    <Ingredient dataImport={dataImport} typeIng='bun'/>
+                    <IngredientList dataImport={dataImport} typeIng={types.BUN}/>
                     <h2 ref={sauceRef} className='text text_type_main-medium'>Соусы</h2>
-                    <Ingredient dataImport={dataImport} typeIng='sauce'/>
+                    <IngredientList dataImport={dataImport} typeIng={types.SAUCE}/>
                     <h2 ref={mainRef} className='text text_type_main-medium'>Начинки</h2>
-                    <Ingredient dataImport={dataImport} typeIng='main'/>
+                    <IngredientList dataImport={dataImport} typeIng={types.MAIN}/>
                 </section>
             </section>
 
@@ -67,19 +67,5 @@ function BurgerIngredients() {
 
     )
 }
-
-BurgerIngredients.propTypes = {
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number
-  };
 
 export default BurgerIngredients;

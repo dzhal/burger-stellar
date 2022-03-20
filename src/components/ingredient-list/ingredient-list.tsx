@@ -1,6 +1,6 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/currency-icon";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/counter";
-import style from './ingredient.module.css';
+import style from './ingredient-list.module.css';
 import PropTypes from 'prop-types';
 
 interface IngredientProps {
@@ -8,7 +8,7 @@ interface IngredientProps {
    dataImport: Array<any>;
 };
 
-function Ingredient({ typeIng, dataImport }: IngredientProps) {
+function IngredientList({ typeIng, dataImport }: IngredientProps) {
    return (
       <div className={`${style.itemList} mt-6 mb-10 pl-4 pr-4`}>
          {dataImport.filter(item => item.type === typeIng)
@@ -31,18 +31,22 @@ function Ingredient({ typeIng, dataImport }: IngredientProps) {
    )
 };
 
-Ingredient.propTypes = {
-   _id: PropTypes.string,
-   name: PropTypes.string,
-   type: PropTypes.string,
-   proteins: PropTypes.number,
-   fat: PropTypes.number,
-   carbohydrates: PropTypes.number,
-   calories: PropTypes.number,
-   price: PropTypes.number,
-   image: PropTypes.string,
-   image_mobile: PropTypes.string,
-   image_large: PropTypes.string,
+IngredientList.propTypes = {
+   typeIng: PropTypes.string.isRequired,
+   dataImport: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      proteins: PropTypes.number.isRequired,
+      fat: PropTypes.number.isRequired,
+      carbohydrates: PropTypes.number.isRequired,
+      calories: PropTypes.number.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      image_mobile: PropTypes.string.isRequired,
+      image_large: PropTypes.string.isRequired,
+      __v: PropTypes.number.isRequired
+   })).isRequired
 };
 
-export default Ingredient;
+export default IngredientList;
