@@ -1,0 +1,56 @@
+.header {
+    margin: auto;
+    max-width: 1920px;
+    height: 88px;
+    background-color: #1c1c21;
+    box-sizing: border-box;
+    margin-top: 40px;
+    box-sizing: border-box;
+  }
+  
+  .container {
+    height: 100%;
+    min-width: 320px;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .logo {
+    position: absolute;
+    z-index: 5;
+    top: calc((100% - 56px) / 2);
+    left: calc((100% - 290px) / 2);
+    cursor: pointer;
+  }
+  .logoBorder {
+    width: 289.15px;
+    height: 40px;
+    position: absolute;
+    top: calc((100% - 46px) / 2);
+    left: calc((100% - 290px) / 2);
+  }
+  
+  .nav {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .navMenuItem {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .navIcon {
+    line-height: 0.5;
+
+  }
