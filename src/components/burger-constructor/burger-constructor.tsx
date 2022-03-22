@@ -3,11 +3,15 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/currency-icon';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/drag-icon';
 import style from './burger-constructor.module.css';
-import { dataImport } from '../../utils/data';
+import PropTypes from 'prop-types';
 import { types } from '../../utils/types';
 
-function BurgerConstructor() {
-    const bun = dataImport.find(item => item.type === types.BUN);
+interface BurgerConstructorProps {
+    data: Array<any>;
+ };
+
+function BurgerConstructor({data}: BurgerConstructorProps) {
+    const bun = data.find(item => item.type === types.BUN);
     return (
         <>
             <div className={`${style.container}`}>
@@ -23,7 +27,7 @@ function BurgerConstructor() {
                     </div>
                     <div className={`${style.ingredientSubList}`}>
                         <ul>
-                            {dataImport.map((item, index) => (item.type !== types.BUN &&
+                            {data.map((item, index) => (item.type !== types.BUN &&
                                 <li className={`${style.IngredientItem} mt-4 mb-4`} key={index}>
                                     <DragIcon type="primary" />
                                     <ConstructorElement
@@ -49,7 +53,7 @@ function BurgerConstructor() {
                 <div className={`${style.order} mr-4`}>
                     <div className={`${style.totalPrice}`}>
                         <div className={`${style.sum} text text_type_digits-medium mr-2 pr-4`}>
-                            {dataImport.reduce((sum, {price}) => sum + price, 0) + (bun ? bun.price : 0)}
+                            {data.reduce((sum, {price}) => sum + price, 0) + (bun ? bun.price : 0)}
                         </div>
                         <CurrencyIcon type="primary" />
                     </div>
@@ -60,6 +64,23 @@ function BurgerConstructor() {
             </div>
         </>
     )
-}
+};
+
+BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.shape({
+       _id: PropTypes.string.isRequired,
+       name: PropTypes.string.isRequired,
+       type: PropTypes.string.isRequired,
+       proteins: PropTypes.number.isRequired,
+       fat: PropTypes.number.isRequired,
+       carbohydrates: PropTypes.number.isRequired,
+       calories: PropTypes.number.isRequired,
+       price: PropTypes.number.isRequired,
+       image: PropTypes.string.isRequired,
+       image_mobile: PropTypes.string.isRequired,
+       image_large: PropTypes.string.isRequired,
+       __v: PropTypes.number.isRequired
+    })).isRequired
+ };
 
 export default BurgerConstructor;
