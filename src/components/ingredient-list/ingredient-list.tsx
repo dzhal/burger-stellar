@@ -22,7 +22,6 @@ function IngredientList({ typeIng, dataImport, openDetails }: IngredientProps) {
                 .map((data) => (
                     <li
                         className={`${style.card} mb-8`}
-                        id={data._id}
                         key={data._id}
                         value={data.name}
                         onClick={clickHandler(data._id)}
