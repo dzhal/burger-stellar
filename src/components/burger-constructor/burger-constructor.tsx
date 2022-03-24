@@ -25,7 +25,7 @@ function BurgerConstructor({ data, openOrderSuccess }: BurgerConstructorProps) {
                             type="top"
                             isLocked={true}
                             text={`${bun?.name} (верх)`}
-                            price={bun?.price}
+                            price={bun ? bun.price : 0}
                             thumbnail={bun?.image}
                         />
                     </div>
@@ -55,26 +55,19 @@ function BurgerConstructor({ data, openOrderSuccess }: BurgerConstructorProps) {
                             type="bottom"
                             isLocked={true}
                             text={`${bun?.name} (низ)`}
-                            price={bun?.price}
+                            price={bun ? bun.price : 0}
                             thumbnail={bun?.image}
                         />
                     </div>
                 </div>
                 <div className={`${style.order} mr-4`}>
                     <div className={`${style.totalPrice}`}>
-                        <div
-                            className={`${style.sum} text text_type_digits-medium mr-2 pr-4`}
-                        >
-                            {data.reduce((sum, { price }) => sum + price, 0) +
-                                bun?.price}
+                        <div className={`${style.sum} text text_type_digits-medium mr-2 pr-4`}>
+                            {data.reduce((sum, { price }) => sum + price, 0) + (bun ? bun.price : 0)}
                         </div>
                         <CurrencyIcon type="custom" size="big" />
                     </div>
-                    <Button
-                        type="primary"
-                        size="medium"
-                        onClick={handleClickOrder}
-                    >
+                    <Button type="primary" size="medium" onClick={handleClickOrder}>
                         Оформить заказ
                     </Button>
                 </div>
@@ -100,7 +93,7 @@ BurgerConstructor.propTypes = {
             __v: PropTypes.number.isRequired,
         })
     ).isRequired,
-    openOrderSuccess: PropTypes.func.isRequired
+    openOrderSuccess: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
