@@ -10,23 +10,23 @@
     height: calc(100% - 144px);
     overflow: auto;
 }
-
 .container ::-webkit-scrollbar {
     width: 8px;
-  }
+}
 .container ::-webkit-scrollbar-track {
-    background-color: #2F2F37;
-  }
+    background-color: #2f2f37;
+}
 .container ::-webkit-scrollbar-thumb {
-    background-color: #8585AD; 
-  }
-.IngredientFirstItem, .IngredientLastItem {
+    background-color: #8585ad;
+}
+.ingredientFirstItem,
+.ingredientLastItem {
     display: flex;
     justify-content: flex-end;
     position: relative;
     padding-right: 20px;
 }
-.IngredientItem {
+.ingredientItem {
     display: flex;
     justify-content: center;
     gap: 8px;
