@@ -44,7 +44,7 @@ function Modal({ title, children, isModalOpen, onClose }: ModalProps) {
     );
 };
 
-Modal.PropTypes = {
+Modal.propTypes = {
     title: PropTypes.string, 
     children: PropTypes.node.isRequired, 
     isModalOpen: PropTypes.bool.isRequired,

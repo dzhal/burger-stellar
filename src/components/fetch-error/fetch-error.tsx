@@ -18,7 +18,7 @@ function FetchError({handleRetry}: FetchError) {
     );
 };
 
-FetchError.PropTypes = {
+FetchError.propTypes = {
     handleRetry: PropTypes.func.isRequired
 }
 

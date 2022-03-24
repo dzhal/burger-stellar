@@ -14,7 +14,7 @@ function ModalOverlay({ isModalOpen, onClose }: ModalOverlayProps) {
     );
 };
 
-ModalOverlay.PropTypes ={
+ModalOverlay.propTypes ={
     isModalOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
 }
