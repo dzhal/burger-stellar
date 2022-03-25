@@ -5,9 +5,8 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { URL } from "../../utils/fetch-url";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button";
 import Loader from "../loader/loader";
 import FetchError from "../fetch-error/fetch-error";
 
@@ -21,23 +20,18 @@ function App() {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(URL)
-            .then((data) => data.json())
-            .then((json) => {
-                setIsLoading(false);
-                setData(json.data);
-            })
-            .catch((e) => {
-                setIsLoading(false);
-                setError(true);
-                console.log(`${e.name}: ${e.message}`);
-            });
+        fetchData();
     }, []);
 
-    const handleRetry = () => {
+    const fetchData = useCallback(() => {
         setIsLoading(true);
         fetch(URL)
-            .then((data) => data.json())
+            .then((data) => {
+                if (data.ok) {
+                    return data.json();
+                }
+                return Promise.reject(data.status);
+            })
             .then((json) => {
                 setIsLoading(false);
                 setData(json.data);
@@ -47,7 +41,7 @@ function App() {
                 setError(true);
                 console.log(`${e.name}: ${e.message}`);
             });
-    };
+    }, [URL]);
     const openDetails: (id: string) => void = (id) => {
         setIsDetailsOpen(true);
         setSelectedID(id);
@@ -71,26 +65,20 @@ function App() {
                 title="Детали ингредиента"
                 children={<IngredientDetails detailedInfo={detailedInfo} />}
             />
-            <Modal
-                isModalOpen={isSuccessOpen}
-                onClose={onClose}
-                children={<OrderDetails />}
+            <Modal 
+                isModalOpen={isSuccessOpen} 
+                onClose={onClose} 
+                children={<OrderDetails />} 
             />
             <main className={`${style.container}`}>
                 {isLoading ? (
                     <Loader />
                 ) : isError ? (
-                    <FetchError handleRetry={handleRetry} />
+                    <FetchError handleRetry={fetchData} />
                 ) : (
                     <>
-                        <BurgerIngredients
-                            data={data}
-                            openDetails={openDetails}
-                        />
-                        <BurgerConstructor
-                            data={data}
-                            openOrderSuccess={openOrderSuccess}
-                        />
+                        <BurgerIngredients data={data} openDetails={openDetails} />
+                        <BurgerConstructor data={data} openOrderSuccess={openOrderSuccess} />
                     </>
                 )}
             </main>
