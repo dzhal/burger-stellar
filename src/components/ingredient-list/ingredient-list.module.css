@@ -11,13 +11,13 @@
     width: 272px;
     height: 208px;
     position: relative;
+    cursor: pointer;
 }
 .price {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 24px;
-
 }
 .img {
     height: 120px;
