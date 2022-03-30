@@ -1,33 +1,36 @@
-import style from "./app.module.css";
+//libs
+import { useEffect, useState } from "react";
+//components
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { useCallback, useEffect, useState } from "react";
-import { URL_GET_DATA } from "../../utils/fetch-urls";
 import Loader from "../loader/loader";
 import FetchError from "../fetch-error/fetch-error";
-import { ConstructorDataContext } from "../../context/constructorDataContext";
+//helpers
+import { ConstructorDataContext } from "../../services/constructorDataContext";
 import { IIngredient } from "../../@type/types";
+import { URL_GET_DATA } from "../../utils/fetch-urls";
+//styles
+import style from "./app.module.css";
 
 function App() {
   const [data, setData] = useState<IIngredient[]>([]);
   const [constructorData, setСonstructorData] = useState<IIngredient[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setError] = useState<boolean>(false);
-  const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false);
-  const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false);
-  const [selectedID, setSelectedID] = useState<string>("");
-  const [orderId, setOrderID] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [selectedID, setSelectedID] = useState("");
+  const [orderId, setOrderID] = useState(0);
 
   useEffect(() => {
-    setIsLoading(true);
     fetchData();
   }, []);
 
-  const fetchData = useCallback(() => {
+  const fetchData = () => {
     setIsLoading(true);
     fetch(URL_GET_DATA)
       .then((data) => {
@@ -46,7 +49,7 @@ function App() {
         setError(true);
         console.log(`${e.name}: ${e.message}`);
       });
-  }, [URL_GET_DATA]);
+  };
   const openDetails: (id: string) => void = (id) => {
     setIsDetailsOpen(true);
     setSelectedID(id);
@@ -57,9 +60,12 @@ function App() {
   const onClose = () => {
     setIsDetailsOpen(false);
     setIsSuccessOpen(false);
+    if (orderId) {
+      setOrderID(0);
+    }
   };
 
-  const detailedInfo = data.filter((item) => item["_id"] === selectedID)[0];
+  const detailedInfo = data.find((item) => item["_id"] === selectedID) || null;
 
   return (
     <>

@@ -1,9 +1,12 @@
-import style from "./ingredient-details.module.css";
+//libs
 import PropTypes from "prop-types";
+//helpers
 import { IIngredient } from "../../@type/types";
+//styles
+import style from "./ingredient-details.module.css";
 
 interface IngredientDetailsProps {
-  detailedInfo: IIngredient;
+  detailedInfo: IIngredient | null;
 }
 
 function IngredientDetails({ detailedInfo }: IngredientDetailsProps) {

@@ -1,14 +1,18 @@
+//libs
+import { useContext } from "react";
+import PropTypes from "prop-types";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/constructor-element";
-import { CurrencyIcon } from "../../images/currency-custom";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/drag-icon";
-import style from "./burger-constructor.module.css";
-import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/ingredientTypes";
-import { useContext } from "react";
-import { ConstructorDataContext } from "../../context/constructorDataContext";
+//components
+import { CurrencyIcon } from "../../images/currency-custom";
+//helpers
 import { DataContextType } from "../../@type/types";
+import { ConstructorDataContext } from "../../services/constructorDataContext";
+import { ingredientTypes } from "../../utils/ingredientTypes";
 import { URL_POST_ORDER } from "../../utils/fetch-urls";
+//styles
+import style from "./burger-constructor.module.css";
 
 interface BurgerConstructorProps {
   openOrderSuccess: () => void;

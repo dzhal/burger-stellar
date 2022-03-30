@@ -1,6 +1,10 @@
-import style from "./order-details.module.css";
-import orderImg from "../../images/done.svg";
+//libs
 import PropTypes from "prop-types";
+//helpers
+import orderImg from "../../images/done.svg";
+//styles
+import style from "./order-details.module.css";
+
 interface OrderDetailsProps {
   orderId: number;
 }
@@ -19,7 +23,7 @@ function OrderDetails({ orderId }: OrderDetailsProps) {
             <div className={`text text_type_main-medium mb-15`}>
               идентификатор заказа
             </div>
-            <img src={orderImg} alt="order-success" />
+            <img src={orderImg} alt="order-success" height="120" width="120" />
             <div className={`text text_type_main-default mt-15`}>
               Ваш заказ начали готовить
             </div>

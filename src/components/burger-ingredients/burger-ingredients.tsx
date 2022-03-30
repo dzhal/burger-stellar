@@ -1,10 +1,14 @@
+//libs
 import React, { useState } from "react";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import style from "./burger-ingredients.module.css";
-import IngredientList from "../ingredient-list/ingredient-list";
 import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/ingredientTypes";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+//components
+import IngredientList from "../ingredient-list/ingredient-list";
+//helpers
 import { IIngredient } from "../../@type/types";
+import { ingredientTypes } from "../../utils/ingredientTypes";
+//styles
+import style from "./burger-ingredients.module.css";
 
 interface BurgerIngredientsProps {
   data: IIngredient[];
