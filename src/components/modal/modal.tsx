@@ -1,23 +1,45 @@
 //libs
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
-import PropTypes from "prop-types";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/close-icon";
 //components
 import ModalOverlay from "../modal-overlay/modal-overlay";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import OrderDetails from "../order-details/order-details";
+//helpers
+import { closeModal } from "../../services/modal-slice";
+import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
+import {
+  removeOrder,
+  clearConstructor,
+} from "../../services/burger-constructor-slice";
 //styles
 import style from "./modal.module.css";
 
-interface ModalProps {
-  title?: string;
-  children: React.ReactNode;
-  isModalOpen: boolean;
-  onClose: () => void;
-}
+function Modal() {
+  const dispatch = useAppDispatch();
+  const { isDetailsOpen, isSuccessOpen } = useAppSelector(
+    (store) => store.modal
+  );
+  const isModalOpen = isDetailsOpen || isSuccessOpen;
 
-function Modal({ title, children, isModalOpen, onClose }: ModalProps) {
-  const handleEscPress: (e: KeyboardEvent) => void = function (e) {
-    if (e.key === "Escape") onClose();
+  const closeOrderHandler = () => {
+    dispatch(closeModal());
+    dispatch(removeOrder());
+    dispatch(clearConstructor());
+  };
+  const closeDetailsHandler = () => {
+    dispatch(closeModal());
+  };
+
+  const handleEscPress = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      if (isDetailsOpen) {
+        closeDetailsHandler();
+      } else if (isSuccessOpen) {
+        closeOrderHandler();
+      }
+    }
   };
   useEffect(() => {
     document.addEventListener("keydown", handleEscPress);
@@ -26,30 +48,47 @@ function Modal({ title, children, isModalOpen, onClose }: ModalProps) {
 
   return createPortal(
     <>
-      <ModalOverlay onClose={onClose} isModalOpen={isModalOpen} />
+      <ModalOverlay
+        onClose={
+          isDetailsOpen
+            ? closeDetailsHandler
+            : isSuccessOpen
+            ? closeOrderHandler
+            : () => console.log("Что-то пошло не так")
+        }
+        isModalOpen={isModalOpen}
+      />
       <div
         className={`${
-          !isModalOpen ? style.containerHidden : style.container
+          !isModalOpen ? style.container_hidden : style.container
         } pl-10 pt-10 pr-10 pb-15`}
       >
         <div className={`${style.header}`}>
-          <div className="title text text_type_main-large">{title}</div>
-          <div className={style.closeIcon}>
-            <CloseIcon type="primary" onClick={onClose} />
+          <div className="title text text_type_main-large">
+            {isDetailsOpen ? "Детали ингредиента" : ""}
+          </div>
+          <div className={style.close_icon}>
+            <CloseIcon
+              type="primary"
+              onClick={
+                isDetailsOpen
+                  ? closeDetailsHandler
+                  : isSuccessOpen
+                  ? closeOrderHandler
+                  : () => console.log("Что-то пошло не так")
+              }
+            />
           </div>
         </div>
-        {children}
+        {isDetailsOpen ? (
+          <IngredientDetails />
+        ) : isSuccessOpen ? (
+          <OrderDetails />
+        ) : null}
       </div>
     </>,
     document.getElementById("modal")!
   );
 }
 
-Modal.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-export default Modal;
+export default React.memo(Modal);

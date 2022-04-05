@@ -2,14 +2,25 @@
   width: 600px;
   max-height: calc(100vh - 344px);
 }
-.ingredientList {
+.ingredient_list {
   height: 100%;
 }
-.ingredientSubList {
+.ingredient_list__hover {
+  height: 100%;
+}
+.ingredient_sublist {
   top: 200px;
   height: calc(100% - 144px);
   overflow: auto;
 }
+.ingredient_sublist__hover {
+  top: 200px;
+  height: calc(100% - 144px);
+  overflow: auto;
+  border-radius: 40px;
+  border: 1px dashed darkmagenta;
+}
+
 .container ::-webkit-scrollbar {
   width: 8px;
 }
@@ -19,14 +30,14 @@
 .container ::-webkit-scrollbar-thumb {
   background-color: #8585ad;
 }
-.ingredientFirstItem,
-.ingredientLastItem {
+.ingredient_first_item,
+.ingredient_last_item {
   display: flex;
   justify-content: flex-end;
   position: relative;
   padding-right: 20px;
 }
-.ingredientItem {
+.ingredient_item {
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -38,11 +49,14 @@
   align-items: center;
   gap: 40px;
 }
-.totalPrice {
+.on_hover {
+  border: 1px dashed #8585ad;
+}
+.total_price {
   display: flex;
   align-items: center;
 }
-.topBun {
+.top_bun {
   width: 536px;
   height: 80px;
   display: flex;
@@ -52,8 +66,7 @@
   border: 1px dashed #8585ad;
   border-radius: 88px 88px 40px 40px;
 }
-
-.bottomBun {
+.bottom_bun {
   width: 536px;
   height: 80px;
   display: flex;
@@ -62,4 +75,12 @@
   text-align: center;
   border: 1px dashed #8585ad;
   border-radius: 40px 40px 88px 88px;
+}
+.add_ingredient_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 200px;
+  height: calc(100% - 144px);
+  overflow: auto;
 }

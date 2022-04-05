@@ -12,8 +12,3 @@ export interface IIngredient {
   image_large: string;
   __v: number;
 }
-
-export type DataContextType = {
-  constructorData: IIngredient[];
-  setСonstructorData: (value: IIngredient[]) => void;
-};

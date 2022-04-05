@@ -1,0 +1,13 @@
+.ingredient_item {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+}
+.ingredient_item_on_drag {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+}

@@ -1,5 +1,6 @@
 //libs
 import PropTypes from "prop-types";
+import React from "react";
 //styles
 import style from "./modal-overlay.module.css";
 
@@ -11,7 +12,7 @@ interface ModalOverlayProps {
 function ModalOverlay({ isModalOpen, onClose }: ModalOverlayProps) {
   return (
     <div
-      className={!isModalOpen ? style.containerHidden : style.container}
+      className={!isModalOpen ? style.container_hidden : style.container}
       onClick={onClose}
     ></div>
   );
@@ -22,4 +23,4 @@ ModalOverlay.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default ModalOverlay;
+export default React.memo(ModalOverlay);

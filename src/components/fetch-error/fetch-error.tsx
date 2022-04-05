@@ -1,14 +1,16 @@
 //libs
-import PropTypes from "prop-types";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button";
+//helpers
+import { useAppDispatch } from "../../services/app-hooks";
+import { getIngredients } from "../../services/burger-ingredients-slice";
 //styles
 import style from "./fetch-error.module.css";
 
-interface FetchErrorProps {
-  handleRetry: () => Object | void;
-}
-
-function FetchError({ handleRetry }: FetchErrorProps) {
+function FetchError() {
+  const dispatch = useAppDispatch();
+  const handleRetry = () => {
+    dispatch(getIngredients());
+  };
   return (
     <div className={`${style.error}`}>
       <div className="text text_type_main-large">
@@ -20,9 +22,5 @@ function FetchError({ handleRetry }: FetchErrorProps) {
     </div>
   );
 }
-
-FetchError.propTypes = {
-  handleRetry: PropTypes.func.isRequired,
-};
 
 export default FetchError;
