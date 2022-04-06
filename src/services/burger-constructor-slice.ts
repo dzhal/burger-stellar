@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
 import { ingredientTypes } from "../utils/ingredientTypes";
 import { IIngredient } from "../@type/types";
 import { BASE_URL } from "../utils/fetch-urls";
@@ -41,26 +42,16 @@ const burgerConstructorSlice = createSlice({
     addIngredient: (state, action: PayloadAction<IIngredient>) => {
       if (action.payload.type === ingredientTypes.BUN) {
         state.ingredientBun = action.payload;
-        const bunIngredient = state.countIngredients.find(
-          (item) => item.type === ingredientTypes.BUN
-        );
-        if (bunIngredient) {
-          const indexBun = state.countIngredients.indexOf(bunIngredient);
-          state.countIngredients.splice(indexBun, 1);
-          state.countIngredients.push({
-            id: action.payload._id,
-            count: 2,
-            type: action.payload.type,
-          });
-        } else {
-          state.countIngredients.push({
-            id: action.payload._id,
-            count: 2,
-            type: action.payload.type,
-          });
-        }
+        state.countIngredients[0] = {
+          id: action.payload._id,
+          count: 2,
+          type: action.payload.type,
+        };
       } else {
-        state.ingredientsCommon.push(action.payload);
+        state.ingredientsCommon.push({
+          ...action.payload,
+          ...{ uuid: uuidv4() },
+        });
         const ingredientToIncrementCount = state.countIngredients.find(
           (item) => item.id === action.payload._id
         );
@@ -75,21 +66,26 @@ const burgerConstructorSlice = createSlice({
         }
       }
     },
-    removeIngredient: (state, action: PayloadAction<number>) => {
-      const ingredientToDelete = state.ingredientsCommon[action.payload];
+    removeIngredient: (state, action: PayloadAction<string>) => {
+      const idToDelete = state.ingredientsCommon.find(
+        (item) => item.uuid === action.payload
+      )?._id;
       const ingredientToDecrementCount = state.countIngredients.find(
-        (item) => item.id === ingredientToDelete._id
+        (item) => item.id === idToDelete
       );
       if (ingredientToDecrementCount) {
         ingredientToDecrementCount.count -= 1;
       }
-      state.ingredientsCommon.splice(action.payload, 1);
+      state.ingredientsCommon = state.ingredientsCommon.filter(
+        (item) => item.uuid !== action.payload
+      );
     },
     addOrder: (state, action: PayloadAction<number>) => {
       state.orderId = action.payload;
     },
     removeOrder: (state) => {
       state.orderId = 0;
+      state.countIngredients = [];
     },
     clearConstructor: (state) => {
       state.ingredientsCommon = [];

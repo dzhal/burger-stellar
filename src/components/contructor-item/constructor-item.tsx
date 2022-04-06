@@ -17,7 +17,7 @@ interface ElementProps {
   item: IIngredient;
   id: string;
   index: number;
-  removeHandler: (index: number) => void;
+  removeHandler: (index: string) => void;
 }
 function ConstructorItem({ item, id, index, removeHandler }: ElementProps) {
   const dispatch = useAppDispatch();
@@ -83,7 +83,7 @@ function ConstructorItem({ item, id, index, removeHandler }: ElementProps) {
         text={item.name}
         price={item.price}
         thumbnail={item.image}
-        handleClose={() => removeHandler(index)}
+        handleClose={() => item.uuid && removeHandler(item.uuid)}
       />
     </div>
   );

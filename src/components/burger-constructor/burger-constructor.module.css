@@ -5,22 +5,11 @@
 .ingredient_list {
   height: 100%;
 }
-.ingredient_list__hover {
-  height: 100%;
-}
 .ingredient_sublist {
   top: 200px;
   height: calc(100% - 144px);
   overflow: auto;
 }
-.ingredient_sublist__hover {
-  top: 200px;
-  height: calc(100% - 144px);
-  overflow: auto;
-  border-radius: 40px;
-  border: 1px dashed darkmagenta;
-}
-
 .container ::-webkit-scrollbar {
   width: 8px;
 }
@@ -48,9 +37,6 @@
   justify-content: flex-end;
   align-items: center;
   gap: 40px;
-}
-.on_hover {
-  border: 1px dashed #8585ad;
 }
 .total_price {
   display: flex;

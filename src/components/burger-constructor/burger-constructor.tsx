@@ -5,7 +5,7 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import { useDrop } from "react-dnd";
 //components
 import { CurrencyIcon } from "../../images/currency-custom";
-import ConstructorItem from "../contructor-element/constructor-item";
+import ConstructorItem from "../contructor-item/constructor-item";
 //helpers
 import { IIngredient } from "../../@type/types";
 import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
@@ -33,8 +33,8 @@ function BurgerConstructor() {
     }
   }, [ingredientsCommon, ingredientBun._id, dispatch]);
 
-  const removeHandler = (index: number) => {
-    dispatch(removeIngredient(index));
+  const removeHandler = (uuid: string) => {
+    dispatch(removeIngredient(uuid));
   };
   const [, refDrop] = useDrop({
     accept: "ingredient",
@@ -73,10 +73,7 @@ function BurgerConstructor() {
                 {ingredientsCommon.map(
                   (item, index) =>
                     item.type !== ingredientTypes.BUN && (
-                      <li
-                        className="pt-4"
-                        key={Math.floor(Math.random() * 1000000)}
-                      >
+                      <li className="pt-4" key={item.uuid}>
                         <ConstructorItem
                           item={item}
                           id={item._id}
