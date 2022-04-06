@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IIngredient } from "../@type/types";
 
-type TDetailedInfo = IIngredient;
-
 const modalSlice = createSlice({
   name: "modal",
   initialState: {
     isDetailsOpen: false,
-    detailedInfo: {} as TDetailedInfo,
+    detailedInfo: {} as IIngredient,
     isSuccessOpen: false,
   },
   reducers: {
-    closeModal: (state) => {
+    closeDetailsModal: (state) => {
       state.isDetailsOpen = false;
+    },
+    closeOrderModal: (state) => {
       state.isSuccessOpen = false;
     },
     openIngredientDetails: (state, action: PayloadAction<IIngredient>) => {
@@ -25,6 +25,10 @@ const modalSlice = createSlice({
   },
 });
 
-export const { closeModal, openIngredientDetails, openOrderSuccess } =
-  modalSlice.actions;
+export const {
+  closeDetailsModal,
+  closeOrderModal,
+  openIngredientDetails,
+  openOrderSuccess,
+} = modalSlice.actions;
 export default modalSlice.reducer;

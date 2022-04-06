@@ -83,13 +83,11 @@ const burgerConstructorSlice = createSlice({
     addOrder: (state, action: PayloadAction<number>) => {
       state.orderId = action.payload;
     },
-    removeOrder: (state) => {
-      state.orderId = 0;
-      state.countIngredients = [];
-    },
     clearConstructor: (state) => {
       state.ingredientsCommon = [];
       state.ingredientBun = {} as IIngredient;
+      state.orderId = 0;
+      state.countIngredients = [];
     },
     moveCard: (
       state,
@@ -130,7 +128,6 @@ export const {
   addIngredient,
   removeIngredient,
   addOrder,
-  removeOrder,
   moveCard,
   clearConstructor,
 } = burgerConstructorSlice.actions;
