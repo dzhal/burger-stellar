@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ingredientTypes } from "../utils/ingredientTypes";
 import { IIngredient } from "../@type/types";
 import { URL_POST_ORDER } from "../utils/fetch-urls";
+import checkResponse from "../utils/check-resposnse";
 
 export const getOrderId = createAsyncThunk(
   "constructor/getOrderId",
@@ -16,10 +17,8 @@ export const getOrderId = createAsyncThunk(
           ingredients: ingredients,
         }),
       });
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      const json = await response.json();
+      const checkedResponse = await checkResponse(response);
+      const json = await checkedResponse.json();
       return json.order.number;
     } catch (error) {
       console.log(error);

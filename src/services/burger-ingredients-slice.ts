@@ -2,16 +2,15 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { IIngredient } from "../@type/types";
 import { URL_GET_DATA } from "../utils/fetch-urls";
 import { ingredientTypes } from "../utils/ingredientTypes";
+import checkResponse from "../utils/check-resposnse";
 
 export const getIngredients = createAsyncThunk(
   "ingredients/getIngredients",
   async () => {
     try {
-      const data = await fetch(URL_GET_DATA);
-      if (!data.ok) {
-        return Promise.reject(data.status);
-      }
-      const json = await data.json();
+      const response = await fetch(URL_GET_DATA);
+      const checkedResponse = await checkResponse(response);
+      const json = await checkedResponse.json();
       const ingredients: IIngredient[] = json.data;
       return ingredients;
     } catch (error) {
