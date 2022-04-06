@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { IIngredient } from "../@type/types";
-import { URL_GET_DATA } from "../utils/fetch-urls";
+import { BASE_URL } from "../utils/fetch-urls";
 import { ingredientTypes } from "../utils/ingredientTypes";
 import checkResponse from "../utils/check-resposnse";
 
 export const getIngredients = createAsyncThunk(
   "ingredients/getIngredients",
   async () => {
-    const response = await fetch(URL_GET_DATA);
+    const response = await fetch(`${BASE_URL}ingredients`);
     const checkedResponse = await checkResponse(response);
     const json = await checkedResponse.json();
     const ingredients: IIngredient[] = json.data;
