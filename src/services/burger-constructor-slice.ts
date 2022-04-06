@@ -7,22 +7,18 @@ import checkResponse from "../utils/check-resposnse";
 export const getOrderId = createAsyncThunk(
   "constructor/getOrderId",
   async (ingredients: string[]) => {
-    try {
-      const response = await fetch(URL_POST_ORDER, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ingredients: ingredients,
-        }),
-      });
-      const checkedResponse = await checkResponse(response);
-      const json = await checkedResponse.json();
-      return json.order.number;
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await fetch(URL_POST_ORDER, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: ingredients,
+      }),
+    });
+    const checkedResponse = await checkResponse(response);
+    const json = await checkedResponse.json();
+    return json.order.number;
   }
 );
 

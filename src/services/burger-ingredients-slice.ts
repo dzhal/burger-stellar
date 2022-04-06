@@ -7,15 +7,11 @@ import checkResponse from "../utils/check-resposnse";
 export const getIngredients = createAsyncThunk(
   "ingredients/getIngredients",
   async () => {
-    try {
-      const response = await fetch(URL_GET_DATA);
-      const checkedResponse = await checkResponse(response);
-      const json = await checkedResponse.json();
-      const ingredients: IIngredient[] = json.data;
-      return ingredients;
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await fetch(URL_GET_DATA);
+    const checkedResponse = await checkResponse(response);
+    const json = await checkedResponse.json();
+    const ingredients: IIngredient[] = json.data;
+    return ingredients;
   }
 );
 
