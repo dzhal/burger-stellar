@@ -35,7 +35,7 @@ function Modal({ children, isModalOpen, title, onClose }: IModal) {
       >
         <div className={`${style.header}`}>
           <div className="title text text_type_main-large">
-            {title ? "Детали ингредиента" : ""}
+            {title ? title : ""}
           </div>
           <div className={style.close_icon}>
             <CloseIcon type="primary" onClick={onClose} />

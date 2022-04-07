@@ -53,5 +53,8 @@
   "prettier": {
     "tabWidth": 2,
     "printWidth": 80
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.4"
   }
 }
