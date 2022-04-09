@@ -83,12 +83,6 @@ const burgerConstructorSlice = createSlice({
     addOrder: (state, action: PayloadAction<number>) => {
       state.orderId = action.payload;
     },
-    clearConstructor: (state) => {
-      state.ingredientsCommon = [];
-      state.ingredientBun = {} as IIngredient;
-      state.orderId = 0;
-      state.countIngredients = [];
-    },
     moveCard: (
       state,
       action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
@@ -111,6 +105,9 @@ const burgerConstructorSlice = createSlice({
         state.orderId = action.payload;
         state.isLoading = false;
         state.hasError = false;
+        state.ingredientsCommon = [];
+        state.ingredientBun = {} as IIngredient;
+        state.countIngredients = [];
       }
     );
     builder.addCase(getOrderId.pending, (state) => {
@@ -124,11 +121,6 @@ const burgerConstructorSlice = createSlice({
   },
 });
 
-export const {
-  addIngredient,
-  removeIngredient,
-  addOrder,
-  moveCard,
-  clearConstructor,
-} = burgerConstructorSlice.actions;
+export const { addIngredient, removeIngredient, addOrder, moveCard } =
+  burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;

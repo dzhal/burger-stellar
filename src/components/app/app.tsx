@@ -15,7 +15,6 @@ import FetchError from "../fetch-error/fetch-error";
 import { useAppSelector, useAppDispatch } from "../../services/app-hooks";
 import { getIngredients } from "../../services/burger-ingredients-slice";
 import { closeDetailsModal, closeOrderModal } from "../../services/modal-slice";
-import { clearConstructor } from "../../services/burger-constructor-slice";
 //styles
 import style from "./app.module.css";
 
@@ -37,7 +36,6 @@ function App() {
   };
   const closeOrderModalHandler = () => {
     dispatch(closeOrderModal());
-    dispatch(clearConstructor());
   };
 
   return (
