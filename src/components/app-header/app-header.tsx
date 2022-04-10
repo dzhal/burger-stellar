@@ -1,3 +1,5 @@
+//libs
+import React from "react";
 //components
 import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/burger-icon";
 import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/list-icon";
@@ -52,4 +54,4 @@ function AppHeader() {
   );
 }
 
-export default AppHeader;
+export default React.memo(AppHeader);

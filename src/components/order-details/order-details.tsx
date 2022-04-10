@@ -1,19 +1,30 @@
-//libs
-import PropTypes from "prop-types";
 //helpers
+import React from "react";
 import orderImg from "../../images/done.svg";
+import { useAppSelector } from "../../services/app-hooks";
 //styles
 import style from "./order-details.module.css";
 
-interface OrderDetailsProps {
-  orderId: number;
-}
-
-function OrderDetails({ orderId }: OrderDetailsProps) {
+function OrderDetails() {
+  const { orderId, isLoading, hasError } = useAppSelector(
+    (state) => state.burgerConstructor
+  );
   return (
     <>
       <div className={`${style.container}`}>
-        {orderId ? (
+        {isLoading ? (
+          <div
+            className={`${style.waitingText} text text_type_digits-default mt-9 mb-8`}
+          >
+            Заказ в обработке. Еще чуть-чуть
+          </div>
+        ) : hasError ? (
+          <div
+            className={`${style.waitingText} text text_type_digits-default mt-9 mb-8`}
+          >
+            При оформлении заказа произогла ошибка, попробуйте заказать еще раз
+          </div>
+        ) : (
           <>
             <div
               className={`${style.orderId} text text_type_digits-large mt-9 mb-8`}
@@ -33,20 +44,10 @@ function OrderDetails({ orderId }: OrderDetailsProps) {
               Дождитесь готовности на орбитальной станции
             </div>
           </>
-        ) : (
-          <div
-            className={`${style.waitingText} text text_type_digits-default mt-9 mb-8`}
-          >
-            Заказ в обработке. Еще чуть-чуть
-          </div>
         )}
       </div>
     </>
   );
 }
 
-OrderDetails.propTypes = {
-  orderId: PropTypes.number.isRequired,
-};
-
-export default OrderDetails;
+export default React.memo(OrderDetails);

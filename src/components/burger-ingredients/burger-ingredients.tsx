@@ -1,44 +1,68 @@
 //libs
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useInView } from "react-intersection-observer";
 //components
-import IngredientList from "../ingredient-list/ingredient-list";
+import IngredientsList from "../ingredients-list/ingredients-list";
 //helpers
-import { IIngredient } from "../../@type/types";
 import { ingredientTypes } from "../../utils/ingredientTypes";
+import { setTab } from "../../services/burger-ingredients-slice";
+import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
 //styles
 import style from "./burger-ingredients.module.css";
 
-interface BurgerIngredientsProps {
-  data: IIngredient[];
-  openDetails: (id: string) => void;
-}
-
-function BurgerIngredients({ data, openDetails }: BurgerIngredientsProps) {
-  const [currentTab, setCurrentTab] = useState("bunRef");
-  const bunRef = React.useRef<HTMLHeadingElement>(null);
-  const sauceRef = React.useRef<HTMLHeadingElement>(null);
-  const mainRef = React.useRef<HTMLHeadingElement>(null);
-  const scrollToBun = () => {
-    bunRef.current && bunRef.current.scrollIntoView({ behavior: "smooth" });
+function BurgerIngredients() {
+  const dispatch = useAppDispatch();
+  const { burgerIngredients, currentTab } = useAppSelector(
+    (store) => store.burgerIngredients
+  );
+  const [bunRef, inViewBun] = useInView({ threshold: 0 });
+  const [sauceRef, inViewSauce] = useInView({
+    threshold: 0,
+    rootMargin: "-400px",
+  });
+  const [mainRef, inViewMain] = useInView({
+    threshold: 0,
+    rootMargin: "-400px",
+  });
+  const scrollToCategory = (tab: string) => {
+    document.getElementById(tab)?.scrollIntoView({ behavior: "smooth" });
   };
-  const scrollToSauce = () => {
-    sauceRef.current && sauceRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-  const scrollToMain = () => {
-    mainRef.current && mainRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-  function clickTabHandler(tab: string) {
-    setCurrentTab(tab);
-    if (tab === "bunRef") {
-      scrollToBun();
-    } else if (tab === "sauceRef") {
-      scrollToSauce();
-    } else if (tab === "mainRef") {
-      scrollToMain();
+  const clickTabHandler = (tab: string) => {
+    dispatch(setTab(tab));
+    if (tab === ingredientTypes.BUN) {
+      scrollToCategory(tab);
+    } else if (tab === ingredientTypes.SAUCE) {
+      scrollToCategory(tab);
+    } else if (tab === ingredientTypes.MAIN) {
+      scrollToCategory(tab);
     }
-  }
+  };
+  const bunIngredients = useMemo(
+    () => burgerIngredients.filter((item) => item.type === ingredientTypes.BUN),
+    [burgerIngredients]
+  );
+  const sauceIngredients = useMemo(
+    () =>
+      burgerIngredients.filter((item) => item.type === ingredientTypes.SAUCE),
+    [burgerIngredients]
+  );
+  const mainIngredients = useMemo(
+    () =>
+      burgerIngredients.filter((item) => item.type === ingredientTypes.MAIN),
+    [burgerIngredients]
+  );
+
+  useEffect(() => {
+    if (inViewBun) {
+      dispatch(setTab(ingredientTypes.BUN));
+    } else if (inViewSauce) {
+      dispatch(setTab(ingredientTypes.SAUCE));
+    } else if (inViewMain) {
+      dispatch(setTab(ingredientTypes.MAIN));
+    }
+  }, [inViewBun, inViewMain, inViewSauce, dispatch]);
+
   return (
     <>
       <section className={`${style.container}`}>
@@ -47,76 +71,56 @@ function BurgerIngredients({ data, openDetails }: BurgerIngredientsProps) {
         </h1>
         <div className={`${style.tabs}`}>
           <Tab
-            value="bunRef"
-            active={currentTab === "bunRef"}
+            value={ingredientTypes.BUN}
+            active={currentTab === ingredientTypes.BUN}
             onClick={clickTabHandler}
           >
             Булки
           </Tab>
           <Tab
-            value="sauceRef"
-            active={currentTab === "sauceRef"}
+            value={ingredientTypes.SAUCE}
+            active={currentTab === ingredientTypes.SAUCE}
             onClick={clickTabHandler}
           >
             Соусы
           </Tab>
           <Tab
-            value="mainRef"
-            active={currentTab === "mainRef"}
+            value={ingredientTypes.MAIN}
+            active={currentTab === ingredientTypes.MAIN}
             onClick={clickTabHandler}
           >
             Начинки
           </Tab>
         </div>
         <section className={`${style.ingredientsList} mt-10`}>
-          <h2 ref={bunRef} className="text text_type_main-medium">
+          <h2
+            ref={bunRef}
+            id={ingredientTypes.BUN}
+            className="text text_type_main-medium"
+          >
             Булки
           </h2>
-          <IngredientList
-            dataImport={data}
-            typeIng={ingredientTypes.BUN}
-            openDetails={openDetails}
-          />
-          <h2 ref={sauceRef} className="text text_type_main-medium">
+          <IngredientsList ingredients={bunIngredients} />
+          <h2
+            ref={sauceRef}
+            id={ingredientTypes.SAUCE}
+            className="text text_type_main-medium"
+          >
             Соусы
           </h2>
-          <IngredientList
-            dataImport={data}
-            typeIng={ingredientTypes.SAUCE}
-            openDetails={openDetails}
-          />
-          <h2 ref={mainRef} className="text text_type_main-medium">
+          <IngredientsList ingredients={sauceIngredients} />
+          <h2
+            ref={mainRef}
+            id={ingredientTypes.MAIN}
+            className="text text_type_main-medium"
+          >
             Начинки
           </h2>
-          <IngredientList
-            dataImport={data}
-            typeIng={ingredientTypes.MAIN}
-            openDetails={openDetails}
-          />
+          <IngredientsList ingredients={mainIngredients} />
         </section>
       </section>
     </>
   );
 }
 
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  openDetails: PropTypes.func.isRequired,
-};
-
-export default BurgerIngredients;
+export default React.memo(BurgerIngredients);

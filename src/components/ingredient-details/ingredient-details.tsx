@@ -1,15 +1,12 @@
-//libs
-import PropTypes from "prop-types";
 //helpers
-import { IIngredient } from "../../@type/types";
+import React from "react";
+import { useAppSelector } from "../../services/app-hooks";
 //styles
 import style from "./ingredient-details.module.css";
 
-interface IngredientDetailsProps {
-  detailedInfo: IIngredient | null;
-}
+function IngredientDetails() {
+  const { detailedInfo } = useAppSelector((store) => store.modal);
 
-function IngredientDetails({ detailedInfo }: IngredientDetailsProps) {
   return (
     <div className={`${style.container}`}>
       {detailedInfo && (
@@ -78,21 +75,4 @@ function IngredientDetails({ detailedInfo }: IngredientDetailsProps) {
   );
 }
 
-IngredientDetails.propTypes = {
-  detailedInfo: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-  }),
-};
-
-export default IngredientDetails;
+export default React.memo(IngredientDetails);
