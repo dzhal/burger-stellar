@@ -11,6 +11,7 @@ const modalSlice = createSlice({
   reducers: {
     closeDetailsModal: (state) => {
       state.isDetailsOpen = false;
+      localStorage.removeItem("modalDetailed");
     },
     closeOrderModal: (state) => {
       state.isSuccessOpen = false;
@@ -18,6 +19,7 @@ const modalSlice = createSlice({
     openIngredientDetails: (state, action: PayloadAction<IIngredient>) => {
       state.detailedInfo = action.payload;
       state.isDetailsOpen = true;
+      localStorage.setItem("modalDetailed", action.payload._id);
     },
     openOrderSuccess: (state) => {
       state.isSuccessOpen = true;

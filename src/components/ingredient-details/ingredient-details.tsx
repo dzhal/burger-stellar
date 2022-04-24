@@ -1,69 +1,84 @@
 //helpers
-import React from "react";
-import { useAppSelector } from "../../services/app-hooks";
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
+import { openIngredientDetails } from "../../services/modal-slice";
 //styles
-import style from "./ingredient-details.module.css";
+import styles from "./ingredient-details.module.css";
 
 function IngredientDetails() {
+  const dispatch = useAppDispatch();
+  const localDetailedId = localStorage.getItem("modalDetailed");
   const { detailedInfo } = useAppSelector((store) => store.modal);
-
+  const { burgerIngredients } = useAppSelector(
+    (store) => store.burgerIngredients
+  );
+  useEffect(() => {
+    if (!detailedInfo._id) {
+      let detailedObject = burgerIngredients.find(
+        (item) => item._id === localDetailedId
+      );
+      if (detailedObject) {
+        dispatch(openIngredientDetails(detailedObject));
+      }
+    }
+  }, [dispatch, detailedInfo, localDetailedId, burgerIngredients]);
   return (
-    <div className={`${style.container}`}>
+    <div className={`${styles.container}`}>
       {detailedInfo && (
         <>
-          <div className={style.image}>
+          <div className={styles.image}>
             <img src={detailedInfo.image_large} alt={detailedInfo.name} />
           </div>
           <span
-            className={`${style.name} text text_type_main-medium mt-4 mb-8`}
+            className={`${styles.name} text text_type_main-medium mt-4 mb-8`}
           >
             {detailedInfo.name}
           </span>
-          <div className={`${style.nutrition}`}>
-            <div className={`${style.nutritionItem} text_color_inactive`}>
+          <div className={`${styles.nutrition}`}>
+            <div className={`${styles.nutritionItem} text_color_inactive`}>
               <span
-                className={`${style.detailsName} text text_type_main-default`}
+                className={`${styles.detailsName} text text_type_main-default`}
               >
                 Калории,ккал
               </span>
               <span
-                className={`${style.detailsValue} text_type_digits-default`}
+                className={`${styles.detailsValue} text_type_digits-default`}
               >
                 {detailedInfo.calories}
               </span>
             </div>
-            <div className={`${style.nutritionItem} text_color_inactive`}>
+            <div className={`${styles.nutritionItem} text_color_inactive`}>
               <span
-                className={`${style.detailsName} text text_type_main-default`}
+                className={`${styles.detailsName} text text_type_main-default`}
               >
                 Белки, г
               </span>
               <span
-                className={`${style.detailsValue} text_type_digits-default`}
+                className={`${styles.detailsValue} text_type_digits-default`}
               >
                 {detailedInfo.proteins}
               </span>
             </div>
-            <div className={`${style.nutritionItem} text_color_inactive`}>
+            <div className={`${styles.nutritionItem} text_color_inactive`}>
               <span
-                className={`${style.detailsName} text text_type_main-default`}
+                className={`${styles.detailsName} text text_type_main-default`}
               >
                 Жиры, г
               </span>
               <span
-                className={`${style.detailsValue} text_type_digits-default`}
+                className={`${styles.detailsValue} text_type_digits-default`}
               >
                 {detailedInfo.fat}
               </span>
             </div>
-            <div className={`${style.nutritionItem} text_color_inactive`}>
+            <div className={`${styles.nutritionItem} text_color_inactive`}>
               <span
-                className={`${style.detailsName} text text_type_main-default`}
+                className={`${styles.detailsName} text text_type_main-default`}
               >
                 Углеводы, г
               </span>
               <span
-                className={`${style.detailsValue} text_type_digits-default`}
+                className={`${styles.detailsValue} text_type_digits-default`}
               >
                 {detailedInfo.carbohydrates}
               </span>

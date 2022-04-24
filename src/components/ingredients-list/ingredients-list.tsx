@@ -1,13 +1,14 @@
 //libs
 import React from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 //helpers
 import { openIngredientDetails } from "../../services/modal-slice";
 import { IIngredient } from "../../@type/types";
-//styless
-import style from "./ingredients-list.module.css";
 import { useAppDispatch } from "../../services/app-hooks";
 import Ingredient from "../ingredient/ingredient";
+//styless
+import style from "./ingredients-list.module.css";
 
 interface IngredientProps {
   ingredients: IIngredient[];
@@ -15,9 +16,11 @@ interface IngredientProps {
 
 function IngredientsList({ ingredients }: IngredientProps) {
   const dispatch = useAppDispatch();
-  const clickHandler = (id: string) => (e: React.MouseEvent) => {
+  const navigate = useNavigate();
+  const clickHandler = (id: string) => () => {
     let detailedObject = ingredients.find((item) => item._id === id);
     if (detailedObject) {
+      navigate(`ingredients/${detailedObject._id}`);
       dispatch(openIngredientDetails(detailedObject));
     }
   };

@@ -1,20 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { ingredientTypes } from "../utils/ingredientTypes";
-import { IIngredient } from "../@type/types";
+import { IIngredient, TGetOrderId } from "../@type/types";
 import { BASE_URL } from "../utils/fetch-urls";
 import checkResponse from "../utils/check-resposnse";
 
 export const getOrderId = createAsyncThunk(
   "constructor/getOrderId",
-  async (ingredients: string[]) => {
+  async (params: TGetOrderId) => {
     const response = await fetch(`${BASE_URL}orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `${params.accessToken}`,
       },
       body: JSON.stringify({
-        ingredients: ingredients,
+        ingredients: params.ingredients,
       }),
     });
     const checkedResponse = await checkResponse(response);
