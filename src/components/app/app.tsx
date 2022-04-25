@@ -76,6 +76,7 @@ function App() {
 
   return (
     <>
+      {console.log("render")}
       <AppHeader />
       <Modal
         onClose={closeOrderModalHandler}
