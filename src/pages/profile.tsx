@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link, Outlet, useMatch } from "react-router-dom";
 import Loader from "../components/loader/loader";
 import { useAppDispatch, useAppSelector } from "../services/app-hooks";
-import { getUser, logout, refreshingToken } from "../services/auth-slice";
+import { getUser, logout } from "../services/auth-slice";
 import { getToken } from "../utils/cookie-utils";
 import styles from "./profile.module.css";
 
@@ -29,7 +29,7 @@ const Profile = () => {
         })
       );
     }
-  }, [dispatch, accessToken, refreshToken]);
+  }, [dispatch, accessToken, refreshToken, name, email]);
 
   return userLoading || !name || !email ? (
     <Loader />

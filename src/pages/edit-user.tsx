@@ -4,12 +4,10 @@ import React, { SyntheticEvent, useCallback } from "react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../services/app-hooks";
 import { updateUser } from "../services/auth-slice";
-import { getToken } from "../utils/cookie-utils";
 import { regexEmail } from "../utils/regex-email";
 import styles from "./profile.module.css";
 
 const EditUser = () => {
-  // const refreshToken = getToken("token");
   const dispatch = useAppDispatch();
   const { name, email, accessToken, refreshToken } = useAppSelector(
     (state) => state.auth
