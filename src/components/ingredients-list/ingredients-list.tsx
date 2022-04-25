@@ -1,7 +1,7 @@
 //libs
 import React from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 //helpers
 import { openIngredientDetails } from "../../services/modal-slice";
 import { IIngredient } from "../../@type/types";
@@ -16,11 +16,15 @@ interface IngredientProps {
 
 function IngredientsList({ ingredients }: IngredientProps) {
   const dispatch = useAppDispatch();
+  let location = useLocation();
   const navigate = useNavigate();
   const clickHandler = (id: string) => () => {
     let detailedObject = ingredients.find((item) => item._id === id);
     if (detailedObject) {
-      navigate(`ingredients/${detailedObject._id}`);
+      navigate(`ingredients/${detailedObject._id}`, {
+        state: { backgroundLocation: location },
+      });
+      console.log(location.state);
       dispatch(openIngredientDetails(detailedObject));
     }
   };

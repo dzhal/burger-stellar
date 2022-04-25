@@ -31,8 +31,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 20px;
-  padding: 16px;
+  margin-top: 24px;
   color: #4c4cff;
 }
 .editHandler_cancel:hover {

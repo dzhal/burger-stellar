@@ -2,7 +2,13 @@
 import React, { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 //components
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
@@ -24,20 +30,31 @@ import { useAppSelector, useAppDispatch } from "../../services/app-hooks";
 import { getIngredients } from "../../services/burger-ingredients-slice";
 import { closeDetailsModal, closeOrderModal } from "../../services/modal-slice";
 import { getToken } from "../../utils/cookie-utils";
-import { setLoggedIn, setRefreshToken } from "../../services/auth-slice";
+import { refreshingToken, setLoggedIn } from "../../services/auth-slice";
 //styles
 import style from "./app.module.css";
 import Orders from "../../pages/orders";
+import EditUser from "../../pages/edit-user";
+type LocationProps = {
+  state: {
+    from?: { pathname: string };
+    backgroundLocation?: Location;
+  };
+};
 
 function App() {
+  const location = useLocation() as LocationProps;
+  let state = location.state;
+  let from = state?.from || "/";
   const navigate = useNavigate();
   const token = getToken("token");
-  const modalDetailed = localStorage.getItem("modalDetailed");
   const dispatch = useAppDispatch();
   const { isLoading, hasError } = useAppSelector(
     (store) => store.burgerIngredients
   );
-  const { isSuccessOpen } = useAppSelector((store) => store.modal);
+  const { isDetailsOpen, isSuccessOpen } = useAppSelector(
+    (store) => store.modal
+  );
   const { isLoggedIn, canResetPassword } = useAppSelector(
     (state) => state.auth
   );
@@ -45,9 +62,9 @@ function App() {
     dispatch(getIngredients());
     if (token) {
       dispatch(setLoggedIn());
-      dispatch(setRefreshToken(token));
+      dispatch(refreshingToken(token));
     }
-  }, [dispatch, token]);
+  }, [dispatch]);
 
   const closeDetailsModalHandler = () => {
     dispatch(closeDetailsModal());
@@ -65,7 +82,7 @@ function App() {
         isModalOpen={isSuccessOpen}
         children={<OrderDetails />}
       />
-      <Routes>
+      <Routes location={state?.backgroundLocation || location}>
         <Route
           path="/"
           element={
@@ -83,24 +100,10 @@ function App() {
             </main>
           }
         />
-        <Route
-          path="/ingredients/:id"
-          element={
-            Boolean(modalDetailed) ? (
-              <Modal
-                title="Детали ингредиента"
-                isModalOpen={Boolean(modalDetailed)}
-                onClose={closeDetailsModalHandler}
-                children={<IngredientDetails />}
-              />
-            ) : (
-              <IngredientPage />
-            )
-          }
-        />
+        <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route
           path="/login"
-          element={!isLoggedIn ? <Login /> : <Navigate to="/" />}
+          element={!isLoggedIn ? <Login /> : <Navigate to={from} replace />}
         />
         <Route
           path="/register"
@@ -122,14 +125,34 @@ function App() {
         />
         <Route
           path="/profile"
-          element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/profile/orders"
-          element={isLoggedIn ? <Orders /> : <Navigate to="/login" />}
-        />
+          element={
+            isLoggedIn ? (
+              <Profile />
+            ) : (
+              <Navigate to="/login" state={{ from: location }} replace />
+            )
+          }
+        >
+          <Route path="" element={<EditUser />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
         <Route path="*" element={<Page404 />} />
       </Routes>
+      {state?.backgroundLocation && (
+        <Routes>
+          <Route
+            path="/ingredients/:id"
+            element={
+              <Modal
+                title="Детали ингредиента"
+                isModalOpen={isDetailsOpen}
+                onClose={closeDetailsModalHandler}
+                children={<IngredientDetails />}
+              />
+            }
+          />
+        </Routes>
+      )}
     </>
   );
 }

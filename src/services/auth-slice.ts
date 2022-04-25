@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  TFormGetUser,
   TFormLogin,
   TFormRegister,
   TFormReset,
@@ -44,18 +45,53 @@ export const refreshingToken = createAsyncThunk(
 );
 export const getUser = createAsyncThunk(
   "auth/getUser",
-  async (accessToken: string) => {
-    return await requestAPI(ENDPOINTS.getUser, undefined, accessToken);
+  async (form: TFormGetUser) => {
+    try {
+      const response = {
+        ...(await requestAPI(ENDPOINTS.getUser, undefined, form.accessToken)),
+        ...{ refreshToken: form.refreshToken, accessToken: form.accessToken },
+      };
+      return response;
+    } catch (e) {
+      if (e === 403) {
+        const refresh = await requestAPI(ENDPOINTS.token, {
+          token: form.refreshToken,
+        });
+        const response = await requestAPI(
+          ENDPOINTS.getUser,
+          undefined,
+          refresh.accessToken
+        );
+        return { ...response, ...refresh };
+      }
+    }
   }
 );
 export const updateUser = createAsyncThunk(
   "auth/updateUser",
   async (form: TFormUpdateUser) => {
-    return await requestAPI(
-      ENDPOINTS.updateUser,
-      { name: form.name || "", email: form.email || "" },
-      form.accessToken
-    );
+    try {
+      return {
+        ...(await requestAPI(
+          ENDPOINTS.updateUser,
+          { name: form.name || "", email: form.email || "" },
+          form.accessToken
+        )),
+        ...{ refreshToken: form.refreshToken, accessToken: form.accessToken },
+      };
+    } catch (e) {
+      if (e === 403) {
+        const refresh = await requestAPI(ENDPOINTS.token, {
+          token: form.refreshToken,
+        });
+        const response = await requestAPI(
+          ENDPOINTS.updateUser,
+          { name: form.name || "", email: form.email || "" },
+          refresh.accessToken
+        );
+        return { ...response, ...refresh };
+      }
+    }
   }
 );
 
@@ -79,6 +115,9 @@ const authSlice = createSlice({
     setRefreshToken: (state, action) => {
       state.refreshToken = action.payload;
     },
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(forgotPassword.fulfilled, (state, action) => {
@@ -92,8 +131,7 @@ const authSlice = createSlice({
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.isLoggedIn = true;
-      setToken("token", action.payload.refreshToken);
-      setToken("accessToken", action.payload.accessToken, { expires: 1200 });
+      setToken("token", action.payload.refreshToken, { path: "/" });
       state.isLoading = false;
       state.hasError = false;
     });
@@ -111,8 +149,7 @@ const authSlice = createSlice({
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.isLoggedIn = true;
-      setToken("token", action.payload.refreshToken);
-      setToken("accessToken", action.payload.accessToken, { expires: 1200 });
+      setToken("token", action.payload.refreshToken, { path: "/" });
     });
     builder.addCase(login.pending, (state) => {});
     builder.addCase(login.rejected, (state) => {});
@@ -123,7 +160,6 @@ const authSlice = createSlice({
       state.email = "";
       state.isLoggedIn = false;
       deleteToken("token");
-      deleteToken("accessToken");
     });
     builder.addCase(logout.pending, (state) => {});
     builder.addCase(logout.rejected, (state) => {});
@@ -136,6 +172,9 @@ const authSlice = createSlice({
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.userLoading = false;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      setToken("token", action.payload.refreshToken, { path: "/" });
     });
     builder.addCase(getUser.pending, (state) => {
       state.userLoading = true;
@@ -143,11 +182,16 @@ const authSlice = createSlice({
     builder.addCase(getUser.rejected, (state) => {
       state.accessToken = "";
       state.userLoading = false;
+      // state.isLoggedIn = false;
+      // deleteToken("token");
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.userLoading = false;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      setToken("token", action.payload.refreshToken, { path: "/" });
     });
     builder.addCase(updateUser.pending, (state) => {
       state.userLoading = true;
@@ -160,13 +204,13 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-      setToken("token", action.payload.refreshToken);
-      setToken("accessToken", action.payload.accessToken, { expires: 1200 });
+      setToken("token", action.payload.refreshToken, { path: "/" });
     });
     builder.addCase(refreshingToken.pending, (state) => {});
     builder.addCase(refreshingToken.rejected, (state) => {});
   },
 });
 
-export const { setLoggedIn, setRefreshToken } = authSlice.actions;
+export const { setLoggedIn, setRefreshToken, setAccessToken } =
+  authSlice.actions;
 export default authSlice.reducer;

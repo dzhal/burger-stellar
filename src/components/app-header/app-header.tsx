@@ -11,7 +11,7 @@ import styles from "./app-header.module.css";
 
 function AppHeader() {
   const isLogin = useMatch("/login");
-  const isProfile = useMatch("/profile");
+  const isProfile = useMatch("/profile/*");
   const isConstructor = useMatch("/");
   const isOrderFeed = useMatch("/feed");
   return (

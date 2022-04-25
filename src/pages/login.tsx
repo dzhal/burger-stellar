@@ -1,24 +1,16 @@
-import {
-  ChangeEvent,
-  FocusEvent,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { ChangeEvent, FocusEvent, SyntheticEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/input";
 import { PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/password-input";
 import { TFormLogin } from "../@type/types";
-import { useAppDispatch, useAppSelector } from "../services/app-hooks";
+import { useAppDispatch } from "../services/app-hooks";
 import { login } from "../services/auth-slice";
 import { regexEmail } from "../utils/regex-email";
 import styles from "./auth.module.css";
 
 const Login = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
@@ -49,12 +41,6 @@ const Login = () => {
     e.preventDefault();
     dispatch(login(form));
   };
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/profile");
-    }
-  }, [navigate, isLoggedIn]);
 
   return (
     <div className={styles.container}>

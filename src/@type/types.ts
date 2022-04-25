@@ -33,10 +33,15 @@ export type TFormForgot = {
 export type TFormRefreshToken = {
   token: string;
 };
-export type TFormUpdateUser = {
-  name?: string;
-  email?: string;
+export type TFormGetUser = {
   accessToken: string;
+  refreshToken: string;
+};
+export type TFormUpdateUser = {
+  name: string;
+  email: string;
+  accessToken: string;
+  refreshToken: string;
 };
 export type TFormReset = {
   password: string;
