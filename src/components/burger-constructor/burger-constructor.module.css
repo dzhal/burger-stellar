@@ -1,6 +1,6 @@
 .container {
   width: 600px;
-  max-height: calc(100vh - 344px);
+  max-height: calc(100vh - 304px);
 }
 .ingredient_list {
   height: 100%;

@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/button";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/constructor-element";
 import { useDrop } from "react-dnd";
+import { useNavigate } from "react-router-dom";
 //components
 import { CurrencyIcon } from "../../images/currency-custom";
 import ConstructorItem from "../contructor-item/constructor-item";
@@ -16,22 +17,39 @@ import {
 } from "../../services/burger-constructor-slice";
 import { getOrderId } from "../../services/burger-constructor-slice";
 import { openOrderSuccess } from "../../services/modal-slice";
+import { getToken } from "../../utils/cookie-utils";
 //styles
 import style from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
+  const accessToken = getToken("accessToken");
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
   const { ingredientsCommon, ingredientBun } = useAppSelector(
     (state) => state.burgerConstructor
   );
   const orderHandler = useCallback(() => {
-    if (ingredientsCommon.length > 0) {
+    if (!isLoggedIn) navigate("/login");
+    if (isLoggedIn && ingredientsCommon.length > 0) {
       const orderList: string[] = ingredientsCommon.map((item) => item._id);
       orderList.push(ingredientBun._id);
-      dispatch(getOrderId(orderList));
+      dispatch(
+        getOrderId({
+          ingredients: orderList,
+          accessToken: accessToken,
+        })
+      );
       dispatch(openOrderSuccess());
     }
-  }, [ingredientsCommon, ingredientBun._id, dispatch]);
+  }, [
+    ingredientsCommon,
+    ingredientBun,
+    isLoggedIn,
+    accessToken,
+    dispatch,
+    navigate,
+  ]);
 
   const removeHandler = (uuid: string) => {
     dispatch(removeIngredient(uuid));

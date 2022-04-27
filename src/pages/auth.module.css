@@ -1,0 +1,54 @@
+.container {
+  width: 480px;
+  height: 430px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+}
+.form {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  gap: 24px;
+}
+.formHelper {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.formLink {
+  color: #4c4cff;
+  text-decoration: none;
+}
+.formLink:hover {
+  color: white;
+  transition: 0.3s ease-in;
+}
+.text404 {
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 200px;
+  line-height: 200px;
+}
+.logo {
+  animation: rotate 3.5s linear infinite;
+}
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

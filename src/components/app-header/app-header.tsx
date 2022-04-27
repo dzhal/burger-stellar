@@ -1,5 +1,6 @@
 //libs
 import React from "react";
+import { Link, useMatch } from "react-router-dom";
 //components
 import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/burger-icon";
 import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/list-icon";
@@ -9,45 +10,66 @@ import { Logo } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui
 import styles from "./app-header.module.css";
 
 function AppHeader() {
+  const isLogin = useMatch("/login");
+  const isProfile = useMatch("/profile/*");
+  const isConstructor = useMatch("/");
+  const isOrderFeed = useMatch("/feed");
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.logo}>
+        <Link to="/" className={styles.logo}>
           <Logo />
-        </div>
+        </Link>
         <nav className={styles.nav}>
           <div className={styles.navMenu}>
-            <div className={`${styles.navMenuItem} pl-5 pr-5 pb-4 pt-4`}>
+            <Link
+              to="/"
+              className={`${styles.navMenuItem} text text_type_main-default pl-5 pr-5 pb-4 pt-4`}
+            >
               <div className={styles.navIcon}>
-                <BurgerIcon type="primary" />
+                <BurgerIcon type={isConstructor ? "primary" : "secondary"} />
               </div>
               <span
-                className={`${styles.navTetxt} text text_type_main-default ml-2`}
+                className={`${styles.navText} ${
+                  isConstructor ? "" : "text_color_inactive"
+                } ml-2`}
               >
                 Конструктор
               </span>
-            </div>
-            <div className={`${styles.navMenuItem} pl-5 pr-5 pb-4 pt-4 ml-2`}>
+            </Link>
+            <Link
+              to="/feed"
+              className={`${styles.navMenuItem} text text_type_main-default pl-5 pr-5 pb-4 pt-4 ml-2`}
+            >
               <div className={styles.navIcon}>
-                <ListIcon type="secondary" />
+                <ListIcon type={isOrderFeed ? "primary" : "secondary"} />
               </div>
               <span
-                className={`${styles.navTetxt} text_color_inactive text text_type_main-default ml-2`}
+                className={`${styles.navText} ${
+                  isOrderFeed ? "" : "text_color_inactive"
+                } ml-2`}
               >
                 Лента заказов
               </span>
-            </div>
+            </Link>
           </div>
-          <div className={`${styles.navMenuItem} pl-5 pr-5 pb-4 pt-4`}>
+          <Link
+            to="/profile"
+            className={`${styles.navMenuItem} text text_type_main-default pl-5 pr-5 pb-4 pt-4`}
+          >
             <div className={styles.navIcon}>
-              <ProfileIcon type="secondary" />
+              <ProfileIcon
+                type={isLogin || isProfile ? "primary" : "secondary"}
+              />
             </div>
             <span
-              className={`${styles.navTetxt} text_color_inactive text text_type_main-default ml-2`}
+              className={`${styles.navText} ${
+                isLogin || isProfile ? "" : "text_color_inactive"
+              } ml-2`}
             >
               Личный кабинет
             </span>
-          </div>
+          </Link>
         </nav>
       </div>
     </header>
