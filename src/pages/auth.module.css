@@ -36,5 +36,19 @@
   transition: 0.3s ease-in;
 }
 .text404 {
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  font-size: 200px;
+  line-height: 200px;
+}
+.logo {
+  animation: rotate 3.5s linear infinite;
+}
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }

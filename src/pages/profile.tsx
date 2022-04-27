@@ -52,11 +52,19 @@ const Profile = () => {
         >
           <span className="text_color_inactive">Выход</span>
         </div>
-        <div
-          className={`${styles.menu_description} text text_type_main-default text_color_inactive mt-20`}
-        >
-          В этом разделе вы можете изменить свои персональные данные
-        </div>
+        {isEditUser ? (
+          <div
+            className={`${styles.menu_description} text text_type_main-default text_color_inactive mt-20`}
+          >
+            В этом разделе вы можете изменить свои персональные данные
+          </div>
+        ) : (
+          <div
+            className={`${styles.menu_description} text text_type_main-default text_color_inactive mt-20`}
+          >
+            В этом разделе вы можете просмотреть свою историю заказов
+          </div>
+        )}
       </div>
       <Outlet />
     </div>

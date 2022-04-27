@@ -1,21 +1,21 @@
 .container {
-    max-width: 600px;
-    max-height: calc(100vh - 344px);
+  max-width: 600px;
+  max-height: calc(100vh - 304px);
 }
 .tabs {
-    display: flex;
+  display: flex;
 }
 .ingredientsList {
-    height: 100%;
-    overflow: auto;
-    scrollbar-gutter: stable;
+  height: 100%;
+  overflow: auto;
+  scrollbar-gutter: stable;
 }
 .container ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 .container ::-webkit-scrollbar-track {
-    background-color: #2f2f37;
+  background-color: #2f2f37;
 }
 .container ::-webkit-scrollbar-thumb {
-    background-color: #8585ad;
+  background-color: #8585ad;
 }
