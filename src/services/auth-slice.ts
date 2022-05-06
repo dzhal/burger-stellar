@@ -5,6 +5,7 @@ import {
   TFormRegister,
   TFormReset,
   TFormUpdateUser,
+  TOrder,
 } from "../@type/types";
 import { requestAPI } from "../utils/requestAPI";
 import { ENDPOINTS } from "../utils/fetch-urls";
@@ -25,7 +26,9 @@ export const resetPassword = createAsyncThunk(
 export const register = createAsyncThunk(
   "auth/register",
   async (form: TFormRegister) => {
-    return await requestAPI(ENDPOINTS.register, form);
+    const response = await requestAPI(ENDPOINTS.register, form);
+    setToken("token", response.refreshToken, { path: "/" });
+    return response;
   }
 );
 export const login = createAsyncThunk(
@@ -43,6 +46,34 @@ export const refreshingToken = createAsyncThunk(
     return await requestAPI(ENDPOINTS.token, { token: refreshToken });
   }
 );
+export const getUserOrders = createAsyncThunk(
+  "auth/getUserOrders",
+  async (form: TFormGetUser) => {
+    try {
+      return {
+        ...(await requestAPI(
+          ENDPOINTS.orders_user,
+          undefined,
+          form.accessToken
+        )),
+        ...{ refreshToken: form.refreshToken, accessToken: form.accessToken },
+      };
+    } catch (e) {
+      if (e === 403) {
+        const refresh = await requestAPI(ENDPOINTS.token, {
+          token: form.refreshToken,
+        });
+        setToken("token", refresh.refreshToken, { path: "/" });
+        const response = await requestAPI(
+          ENDPOINTS.orders_user,
+          undefined,
+          refresh.accessToken
+        );
+        return { ...response, ...refresh };
+      }
+    }
+  }
+);
 export const getUser = createAsyncThunk(
   "auth/getUser",
   async (form: TFormGetUser) => {
@@ -51,6 +82,7 @@ export const getUser = createAsyncThunk(
         ...(await requestAPI(ENDPOINTS.getUser, undefined, form.accessToken)),
         ...{ refreshToken: form.refreshToken, accessToken: form.accessToken },
       };
+      setToken("token", form.refreshToken, { path: "/" });
       return response;
     } catch (e) {
       if (e === 403) {
@@ -107,6 +139,9 @@ const authSlice = createSlice({
     refreshToken: "",
     canResetPassword: false,
     userLoading: false,
+    userOrders: [] as TOrder[],
+    ordersLoading: false,
+    ordersHasError: false,
   },
   reducers: {
     setLoggedIn: (state) => {
@@ -131,7 +166,6 @@ const authSlice = createSlice({
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.isLoggedIn = true;
-      setToken("token", action.payload.refreshToken, { path: "/" });
       state.isLoading = false;
       state.hasError = false;
     });
@@ -174,7 +208,6 @@ const authSlice = createSlice({
       state.userLoading = false;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-      setToken("token", action.payload.refreshToken, { path: "/" });
     });
     builder.addCase(getUser.pending, (state) => {
       state.userLoading = true;
@@ -184,6 +217,22 @@ const authSlice = createSlice({
       state.userLoading = false;
       // state.isLoggedIn = false;
       // deleteToken("token");
+    });
+    builder.addCase(getUserOrders.fulfilled, (state, action) => {
+      state.ordersLoading = false;
+      state.ordersHasError = false;
+      state.userOrders = action.payload.orders;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    });
+    builder.addCase(getUserOrders.pending, (state) => {
+      state.ordersLoading = true;
+      state.ordersHasError = false;
+    });
+    builder.addCase(getUserOrders.rejected, (state) => {
+      state.accessToken = "";
+      state.ordersLoading = false;
+      state.ordersHasError = true;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.name = action.payload.user.name;

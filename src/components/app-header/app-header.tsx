@@ -13,7 +13,7 @@ function AppHeader() {
   const isLogin = useMatch("/login");
   const isProfile = useMatch("/profile/*");
   const isConstructor = useMatch("/");
-  const isOrderFeed = useMatch("/feed");
+  const isOrderFeed = useMatch("/feed/*");
   return (
     <header className={styles.header}>
       <div className={styles.container}>

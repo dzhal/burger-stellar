@@ -1,0 +1,78 @@
+.container {
+  width: 640px;
+  height: 620px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.order_status {
+  color: #00cccc;
+}
+.order_ingredients {
+  overflow: auto;
+  height: 312px;
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+.container ::-webkit-scrollbar {
+  width: 8px;
+}
+.container ::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+}
+.container ::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+.ingredient_info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+}
+.ingredient {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 320px;
+}
+.price_info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.order_time_price {
+  display: flex;
+  justify-content: space-between;
+}
+.order_price {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 8px;
+}
+.name {
+  left: 25px;
+  position: relative;
+}
+.order_image {
+  height: 50px;
+  border: 6px solid transparent;
+  margin-left: -25px;
+}
+.image_container {
+  box-sizing: border-box;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  background: #131316;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: linear-gradient(#131316 0 0) padding-box,
+    linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box;
+  margin-right: -10px;
+}

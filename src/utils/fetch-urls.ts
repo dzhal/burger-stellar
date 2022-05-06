@@ -1,5 +1,13 @@
 export const BASE_URL = "https://norma.nomoreparties.space/api/";
 export const ENDPOINTS = {
+  orders_user: {
+    method: "GET",
+    url: `${BASE_URL}orders`,
+  },
+  orders_feed: {
+    method: "GET",
+    url: `${BASE_URL}orders/feed`,
+  },
   login: {
     method: "POST",
     url: `${BASE_URL}auth/login`,
