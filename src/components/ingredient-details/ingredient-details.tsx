@@ -1,5 +1,6 @@
 //helpers
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
 import { openIngredientDetails } from "../../services/modal-slice";
 //styles
@@ -7,21 +8,19 @@ import styles from "./ingredient-details.module.css";
 
 function IngredientDetails() {
   const dispatch = useAppDispatch();
-  const localDetailedId = localStorage.getItem("modalDetailed");
+  const { id } = useParams();
   const { detailedInfo } = useAppSelector((store) => store.modal);
   const { burgerIngredients } = useAppSelector(
     (store) => store.burgerIngredients
   );
   useEffect(() => {
     if (!detailedInfo._id) {
-      let detailedObject = burgerIngredients.find(
-        (item) => item._id === localDetailedId
-      );
+      let detailedObject = burgerIngredients.find((item) => item._id === id);
       if (detailedObject) {
         dispatch(openIngredientDetails(detailedObject));
       }
     }
-  }, [dispatch, detailedInfo, localDetailedId, burgerIngredients]);
+  }, [dispatch, detailedInfo, id, burgerIngredients]);
   return (
     <div className={`${styles.container}`}>
       {detailedInfo && (

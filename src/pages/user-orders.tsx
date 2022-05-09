@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import OrdersFeedItem from "../components/orders-feed-item/orders-feed-item";
 import { useAppDispatch, useAppSelector } from "../services/app-hooks";
 import { getUserOrders } from "../services/auth-slice";
-import { getOrdersFeed } from "../services/orders-slice";
 import styles from "./user-orders.module.css";
 
 const UserOrders = () => {

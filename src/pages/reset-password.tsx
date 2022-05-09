@@ -47,7 +47,7 @@ const ResetPassword = () => {
       <div className="text text_type_main-medium mb-6">
         Восстановление пароля
       </div>
-      <form className={`${styles.form} mb-20`}>
+      <form className={`${styles.form} mb-20`} onSubmit={handleSubmitReset}>
         <PasswordInput
           onChange={handleChangePassword}
           value={password}
@@ -62,7 +62,7 @@ const ResetPassword = () => {
           error={false}
           errorText={"Ошибка при проверке кода"}
         />
-        <Button onClick={handleSubmitReset} type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium">
           Сохранить
         </Button>
       </form>

@@ -55,7 +55,7 @@ const ForgotPassword = () => {
       <div className="text text_type_main-medium mb-6">
         Восстановление пароля
       </div>
-      <form className={`${styles.form} mb-20`}>
+      <form className={`${styles.form} mb-20`} onSubmit={handleSubmit}>
         <Input
           type={"email"}
           placeholder={"Укажите e-mail"}
@@ -66,7 +66,7 @@ const ForgotPassword = () => {
           error={emailError}
           errorText={"Проверьте корректность почты"}
         />
-        <Button type="primary" size="medium" onClick={handleSubmit}>
+        <Button type="primary" size="medium" htmlType="submit">
           Восстановить
         </Button>
       </form>

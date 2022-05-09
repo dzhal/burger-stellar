@@ -53,7 +53,7 @@ const Register = () => {
   return (
     <div className={styles.container}>
       <div className="text text_type_main-medium mb-6">Регистрация</div>
-      <form className={`${styles.form} mb-20`}>
+      <form className={`${styles.form} mb-20`} onSubmit={handleSubmit}>
         <Input
           type={"text"}
           placeholder={"Имя"}
@@ -76,7 +76,7 @@ const Register = () => {
           value={password}
           name={"password"}
         />
-        <Button onClick={handleSubmit} type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium">
           Зарегистрироваться
         </Button>
       </form>

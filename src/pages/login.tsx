@@ -45,7 +45,11 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <div className="text text_type_main-medium mb-6">Вход</div>
-      <form className={`${styles.form} mb-20`} autoComplete="on">
+      <form
+        onSubmit={handelSubmit}
+        className={`${styles.form} mb-20`}
+        autoComplete="on"
+      >
         <Input
           type={"email"}
           placeholder={"E-mail"}
@@ -61,7 +65,7 @@ const Login = () => {
           value={password}
           name={"password"}
         />
-        <Button onClick={handelSubmit} type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium">
           Войти
         </Button>
       </form>
