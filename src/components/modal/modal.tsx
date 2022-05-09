@@ -1,6 +1,5 @@
 //libs
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/close-icon";
 //components
@@ -15,7 +14,7 @@ interface IModal {
   onClose: () => void;
 }
 
-function Modal({ children, isModalOpen, title, onClose }: IModal) {
+const Modal: React.FC<IModal> = ({ children, isModalOpen, title, onClose }) => {
   const handleEscPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") onClose();
   };
@@ -46,13 +45,6 @@ function Modal({ children, isModalOpen, title, onClose }: IModal) {
     </>,
     document.getElementById("modal")!
   );
-}
-
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string,
-  isModalOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default React.memo(Modal);

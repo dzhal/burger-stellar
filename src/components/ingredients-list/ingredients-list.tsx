@@ -1,6 +1,5 @@
 //libs
 import React from "react";
-import PropTypes from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom";
 //helpers
 import { openIngredientDetails } from "../../services/modal-slice";
@@ -14,7 +13,7 @@ interface IngredientProps {
   ingredients: IIngredient[];
 }
 
-function IngredientsList({ ingredients }: IngredientProps) {
+const IngredientsList: React.FC<IngredientProps> = ({ ingredients }) => {
   const dispatch = useAppDispatch();
   let location = useLocation();
   const navigate = useNavigate();
@@ -38,26 +37,6 @@ function IngredientsList({ ingredients }: IngredientProps) {
       ))}
     </div>
   );
-}
-
-IngredientsList.propTypes = {
-  ingredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-      uuid: PropTypes.string,
-    })
-  ).isRequired,
 };
 
 export default React.memo(IngredientsList);

@@ -1,5 +1,5 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TOrder } from "../../@type/types";
 import { useAppSelector } from "../../services/app-hooks";
@@ -12,7 +12,7 @@ interface OrderProps {
   status: boolean;
 }
 
-function OrdersFeedItem({ order, status }: OrderProps) {
+const OrdersFeedItem: React.FC<OrderProps> = ({ order, status }) => {
   const { burgerIngredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
@@ -121,6 +121,6 @@ function OrdersFeedItem({ order, status }: OrderProps) {
       </div>
     </>
   );
-}
+};
 
 export default React.memo(OrdersFeedItem);

@@ -6,7 +6,7 @@ import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 //components
 import { CurrencyIcon } from "../../images/currency-custom";
-import ConstructorItem from "../contructor-item/constructor-item";
+import ConstructorItem from "../constructor-item/constructor-item";
 //helpers
 import { IIngredient } from "../../@type/types";
 import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
