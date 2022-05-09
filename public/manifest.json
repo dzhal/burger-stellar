@@ -1,10 +1,6 @@
 {
   "short_name": "Burger Stellar",
   "name": "Burger Stellar project",
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
   "icons": [
     {
       "src": "./icons/android-chrome-192x192.png",
@@ -16,5 +12,8 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

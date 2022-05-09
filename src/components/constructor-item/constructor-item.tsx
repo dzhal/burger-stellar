@@ -1,7 +1,6 @@
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/constructor-element";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/drag-icon";
 import React, { useRef } from "react";
-import PropTypes from "prop-types";
 import { useDrag, useDrop } from "react-dnd";
 import { XYCoord, Identifier } from "dnd-core";
 import { IIngredient } from "../../@type/types";
@@ -20,7 +19,12 @@ interface ElementProps {
   index: number;
   removeHandler: (index: string) => void;
 }
-function ConstructorItem({ item, id, index, removeHandler }: ElementProps) {
+const ConstructorItem: React.FC<ElementProps> = ({
+  item,
+  id,
+  index,
+  removeHandler,
+}) => {
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
@@ -88,27 +92,6 @@ function ConstructorItem({ item, id, index, removeHandler }: ElementProps) {
       />
     </div>
   );
-}
-
-ConstructorItem.propTypes = {
-  item: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-    uuid: PropTypes.string,
-  }),
-  id: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  removeHandler: PropTypes.func.isRequired,
 };
 
 export default React.memo(ConstructorItem);

@@ -2,10 +2,11 @@
 import React from "react";
 import orderImg from "../../images/done.svg";
 import { useAppSelector } from "../../services/app-hooks";
+import Loader from "../loader/loader";
 //styles
-import style from "./order-details.module.css";
+import style from "./order-success.module.css";
 
-function OrderDetails() {
+function OrderSuccess() {
   const { orderId, isLoading, hasError } = useAppSelector(
     (state) => state.burgerConstructor
   );
@@ -16,7 +17,7 @@ function OrderDetails() {
           <div
             className={`${style.waitingText} text text_type_digits-default mt-9 mb-8`}
           >
-            Заказ в обработке. Еще чуть-чуть
+            <Loader />
           </div>
         ) : hasError ? (
           <div
@@ -50,4 +51,4 @@ function OrderDetails() {
   );
 }
 
-export default React.memo(OrderDetails);
+export default React.memo(OrderSuccess);

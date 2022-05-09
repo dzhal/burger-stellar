@@ -77,7 +77,7 @@ const EditUser = () => {
   }, [tempEmail, validateEmail]);
   return (
     <div>
-      <form className={styles.content}>
+      <form className={styles.content} onSubmit={handleUserEdit}>
         <Input
           type={"text"}
           placeholder={"Имя"}
@@ -115,19 +115,19 @@ const EditUser = () => {
           name={"password"}
           size={"default"}
         />
+        {isEddited && (
+          <div
+            className={`${styles.editHandler} mt-4 text text_type_main-default`}
+          >
+            <Button type="secondary" size="medium" onClick={onCancelEdit}>
+              Отменить
+            </Button>
+            <Button type="primary" htmlType="submit" size="medium">
+              Сохранить
+            </Button>
+          </div>
+        )}
       </form>
-      {isEddited && (
-        <div
-          className={`${styles.editHandler} mt-4 text text_type_main-default`}
-        >
-          <Button type="secondary" size="medium" onClick={onCancelEdit}>
-            Отменить
-          </Button>
-          <Button type="primary" size="medium" onClick={handleUserEdit}>
-            Сохранить
-          </Button>
-        </div>
-      )}
     </div>
   );
 };

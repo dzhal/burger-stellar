@@ -6,7 +6,7 @@ import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 //components
 import { CurrencyIcon } from "../../images/currency-custom";
-import ConstructorItem from "../contructor-item/constructor-item";
+import ConstructorItem from "../constructor-item/constructor-item";
 //helpers
 import { IIngredient } from "../../@type/types";
 import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
@@ -17,23 +17,26 @@ import {
 } from "../../services/burger-constructor-slice";
 import { getOrderId } from "../../services/burger-constructor-slice";
 import { openOrderSuccess } from "../../services/modal-slice";
-import { getToken } from "../../utils/cookie-utils";
 //styles
 import style from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
-  const accessToken = getToken("accessToken");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isLoggedIn, accessToken } = useAppSelector((state) => state.auth);
   const { ingredientsCommon, ingredientBun } = useAppSelector(
     (state) => state.burgerConstructor
   );
+  const canOrder = ingredientsCommon.length > 0 && ingredientBun;
   const orderHandler = useCallback(() => {
     if (!isLoggedIn) navigate("/login");
     if (isLoggedIn && ingredientsCommon.length > 0) {
       const orderList: string[] = ingredientsCommon.map((item) => item._id);
-      orderList.push(ingredientBun._id);
+      if (ingredientBun._id) {
+        orderList.push(ingredientBun._id);
+        orderList.push(ingredientBun._id);
+      }
+
       dispatch(
         getOrderId({
           ingredients: orderList,
@@ -132,7 +135,12 @@ function BurgerConstructor() {
             </div>
             <CurrencyIcon type="custom" size="big" />
           </div>
-          <Button type="primary" size="medium" onClick={orderHandler}>
+          <Button
+            disabled={canOrder ? false : true}
+            type="primary"
+            size="medium"
+            onClick={orderHandler}
+          >
             Оформить заказ
           </Button>
         </div>

@@ -15,7 +15,6 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import OrderDetails from "../order-details/order-details";
 import Loader from "../loader/loader";
 import FetchError from "../fetch-error/fetch-error";
 import Login from "../../pages/login";
@@ -25,6 +24,10 @@ import Register from "../../pages/register";
 import Profile from "../../pages/profile";
 import Page404 from "../../pages/page-404";
 import IngredientPage from "../../pages/ingredient-page";
+import EditUser from "../../pages/edit-user";
+import OrderSuccess from "../order-success/order-success";
+import OrdersFeed from "../orders-feed/orders-feed";
+import UserOrders from "../../pages/user-orders";
 //helpers
 import { useAppSelector, useAppDispatch } from "../../services/app-hooks";
 import { getIngredients } from "../../services/burger-ingredients-slice";
@@ -33,8 +36,8 @@ import { getToken } from "../../utils/cookie-utils";
 import { refreshingToken, setLoggedIn } from "../../services/auth-slice";
 //styles
 import style from "./app.module.css";
-import Orders from "../../pages/orders";
-import EditUser from "../../pages/edit-user";
+import OrderDetails from "../order-detailed/order-details";
+
 type LocationProps = {
   state: {
     from?: { pathname: string };
@@ -80,7 +83,7 @@ function App() {
       <Modal
         onClose={closeOrderModalHandler}
         isModalOpen={isSuccessOpen}
-        children={<OrderDetails />}
+        children={<OrderSuccess />}
       />
       <Routes location={state?.backgroundLocation || location}>
         <Route
@@ -100,6 +103,9 @@ function App() {
             </main>
           }
         />
+        <Route path="feed" element={<OrdersFeed />} />
+        <Route path="feed/:id" element={<OrderDetails />} />
+        <Route path="profile/orders/:id" element={<OrderDetails />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route
           path="/login"
@@ -107,7 +113,7 @@ function App() {
         />
         <Route
           path="/register"
-          element={!isLoggedIn ? <Register /> : <Navigate to="/" />}
+          element={!isLoggedIn ? <Register /> : <Navigate to={from} replace />}
         />
         <Route
           path="/forgot-password"
@@ -134,7 +140,7 @@ function App() {
           }
         >
           <Route path="" element={<EditUser />} />
-          <Route path="orders" element={<Orders />} />
+          <Route path="orders" element={<UserOrders />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Routes>

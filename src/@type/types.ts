@@ -13,6 +13,15 @@ export interface IIngredient {
   __v: number;
   uuid?: string;
 }
+export type TOrder = {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+};
 export type TCookie = {
   [name: string]: string | number | boolean | Date | undefined;
   expires?: Date | number | string;
