@@ -2,25 +2,22 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { ingredientTypes } from "../utils/ingredientTypes";
 import { IIngredient, TGetOrderId } from "../@type/types";
-import { BASE_URL } from "../utils/fetch-urls";
-import checkResponse from "../utils/check-resposnse";
+import { BASE_URL, ENDPOINTS } from "../utils/fetch-urls";
+import { checkResponse, fetchAPIwithRefresh } from "../utils/requestAPI";
+import { getToken } from "../utils/cookie-utils";
 
 export const getOrderId = createAsyncThunk(
   "constructor/getOrderId",
   async (params: TGetOrderId) => {
-    const response = await fetch(`${BASE_URL}orders`, {
-      method: "POST",
+    const response = await fetchAPIwithRefresh(ENDPOINTS.order, {
+      method: ENDPOINTS.order.method,
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${params.accessToken}`,
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: getToken("token"),
       },
-      body: JSON.stringify({
-        ingredients: params.ingredients,
-      }),
+      body: params,
     });
-    const checkedResponse = await checkResponse(response);
-    const json = await checkedResponse.json();
-    return json.order.number;
+    return response.order.number;
   }
 );
 

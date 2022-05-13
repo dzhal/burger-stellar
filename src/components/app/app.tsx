@@ -33,7 +33,7 @@ import { useAppSelector, useAppDispatch } from "../../services/app-hooks";
 import { getIngredients } from "../../services/burger-ingredients-slice";
 import { closeDetailsModal, closeOrderModal } from "../../services/modal-slice";
 import { getToken } from "../../utils/cookie-utils";
-import { refreshingToken, setLoggedIn } from "../../services/auth-slice";
+import { getUser, setLoggedIn } from "../../services/auth-slice";
 //styles
 import style from "./app.module.css";
 import OrderDetails from "../order-detailed/order-details";
@@ -64,10 +64,11 @@ function App() {
   useEffect(() => {
     dispatch(getIngredients());
     if (token) {
-      dispatch(setLoggedIn());
-      dispatch(refreshingToken(token));
+      dispatch(getUser());
+    } else {
+      dispatch(setLoggedIn(false));
     }
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const closeDetailsModalHandler = () => {
     dispatch(closeDetailsModal());

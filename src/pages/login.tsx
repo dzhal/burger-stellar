@@ -4,13 +4,15 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/input";
 import { PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/password-input";
 import { TFormLogin } from "../@type/types";
-import { useAppDispatch } from "../services/app-hooks";
+import { useAppDispatch, useAppSelector } from "../services/app-hooks";
 import { login } from "../services/auth-slice";
 import { regexEmail } from "../utils/regex-email";
 import styles from "./auth.module.css";
+import Loader from "../components/loader/loader";
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const { loginLoading, loginHasError } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
@@ -42,7 +44,9 @@ const Login = () => {
     dispatch(login(form));
   };
 
-  return (
+  return loginLoading ? (
+    <Loader />
+  ) : (
     <div className={styles.container}>
       <div className="text text_type_main-medium mb-6">Вход</div>
       <form
@@ -57,8 +61,12 @@ const Login = () => {
           onBlur={validateEmail}
           value={email}
           name={"email"}
-          error={emailError}
-          errorText={"Проверьте корректность почты"}
+          error={emailError || loginHasError}
+          errorText={
+            emailError
+              ? "Проверьте корректность почты в формате burg@mail.com"
+              : "Проверьте корректность ввода логина и/или пароля"
+          }
         />
         <PasswordInput
           onChange={handleChangePassword}
