@@ -9,9 +9,7 @@ import styles from "./profile.module.css";
 
 const EditUser = () => {
   const dispatch = useAppDispatch();
-  const { name, email, accessToken, refreshToken } = useAppSelector(
-    (state) => state.auth
-  );
+  const { name, email } = useAppSelector((state) => state.auth);
   const [tempName, setTempName] = useState(name);
   const [isNameDisabled, setIsNameDisabled] = useState(true);
   const inputNameRef = useRef<HTMLInputElement>(null);
@@ -52,14 +50,11 @@ const EditUser = () => {
 
   const handleUserEdit = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log(refreshToken);
     if (isEddited && !emailError) {
       dispatch(
         updateUser({
           name: tempName,
           email: tempEmail,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
         })
       );
     }

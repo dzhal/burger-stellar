@@ -6,7 +6,7 @@ import { requestAPI } from "../utils/requestAPI";
 export const getOrdersFeed = createAsyncThunk(
   "orders/getOrdersFeed",
   async () => {
-    return await requestAPI(ENDPOINTS.orders_feed);
+    return await requestAPI(ENDPOINTS.ordersFeed);
   }
 );
 
@@ -39,5 +39,5 @@ const ordersSlice = createSlice({
   },
 });
 
-export const {} = ordersSlice.actions;
+// export const {} = ordersSlice.actions;
 export default ordersSlice.reducer;

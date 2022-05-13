@@ -3,33 +3,34 @@ import { useEffect } from "react";
 import { Link, Outlet, useMatch } from "react-router-dom";
 import Loader from "../components/loader/loader";
 import { useAppDispatch, useAppSelector } from "../services/app-hooks";
-import { getUser, logout } from "../services/auth-slice";
+import { getUser, logout, setLoggedIn } from "../services/auth-slice";
 import { getToken } from "../utils/cookie-utils";
 import styles from "./profile.module.css";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
-  const refreshToken = getToken("token");
-  const { userLoading, accessToken, name, email } = useAppSelector(
-    (state) => state.auth
-  );
+  const refreshToken: string = localStorage.getItem("refreshToken") || "";
+  const accessToken = getToken("token");
+  const { userLoading, name, email } = useAppSelector((state) => state.auth);
   const isEditUser = useMatch("/profile");
   const isOrders = useMatch("/profile/orders");
 
   const handleLogout = () => {
     dispatch(logout(refreshToken));
   };
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUser());
+    } else {
+      dispatch(setLoggedIn(false));
+    }
+  }, [accessToken]);
 
   useEffect(() => {
     if (accessToken && (!name || !email)) {
-      dispatch(
-        getUser({
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        })
-      );
+      dispatch(getUser());
     }
-  }, [dispatch, accessToken, refreshToken, name, email]);
+  }, [dispatch, accessToken, name, email]);
 
   return userLoading || !name || !email ? (
     <Loader />

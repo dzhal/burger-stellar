@@ -23,11 +23,11 @@ import style from "./burger-constructor.module.css";
 function BurgerConstructor() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoggedIn, accessToken } = useAppSelector((state) => state.auth);
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
   const { ingredientsCommon, ingredientBun } = useAppSelector(
     (state) => state.burgerConstructor
   );
-  const canOrder = ingredientsCommon.length > 0 && ingredientBun;
+  const canOrder = ingredientsCommon.length > 0 && ingredientBun._id;
   const orderHandler = useCallback(() => {
     if (!isLoggedIn) navigate("/login");
     if (isLoggedIn && ingredientsCommon.length > 0) {
@@ -40,19 +40,11 @@ function BurgerConstructor() {
       dispatch(
         getOrderId({
           ingredients: orderList,
-          accessToken: accessToken,
         })
       );
       dispatch(openOrderSuccess());
     }
-  }, [
-    ingredientsCommon,
-    ingredientBun,
-    isLoggedIn,
-    accessToken,
-    dispatch,
-    navigate,
-  ]);
+  }, [ingredientsCommon, ingredientBun, isLoggedIn, dispatch, navigate]);
 
   const removeHandler = (uuid: string) => {
     dispatch(removeIngredient(uuid));

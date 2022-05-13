@@ -44,6 +44,9 @@
   font-size: 200px;
   line-height: 200px;
 }
+.loginError {
+  color: #e52b1a;
+}
 .logo {
   animation: rotate 3.5s linear infinite;
 }

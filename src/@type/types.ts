@@ -22,6 +22,10 @@ export type TOrder = {
   updatedAt: string;
   number: number;
 };
+export type TUser = {
+  email: string;
+  name: string;
+};
 export type TCookie = {
   [name: string]: string | number | boolean | Date | undefined;
   expires?: Date | number | string;
@@ -29,7 +33,6 @@ export type TCookie = {
 };
 export type TGetOrderId = {
   ingredients: string[];
-  accessToken: string;
 };
 export type TFormRegister = {
   name: string;
@@ -42,15 +45,9 @@ export type TFormForgot = {
 export type TFormRefreshToken = {
   token: string;
 };
-export type TFormGetUser = {
-  accessToken: string;
-  refreshToken: string;
-};
 export type TFormUpdateUser = {
   name: string;
   email: string;
-  accessToken: string;
-  refreshToken: string;
 };
 export type TFormReset = {
   password: string;

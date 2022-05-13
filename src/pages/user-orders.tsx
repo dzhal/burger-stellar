@@ -6,14 +6,10 @@ import styles from "./user-orders.module.css";
 
 const UserOrders = () => {
   const dispatch = useAppDispatch();
-  const { accessToken, refreshToken, userOrders } = useAppSelector(
-    (state) => state.auth
-  );
+  const { userOrders } = useAppSelector((state) => state.auth);
   useEffect(() => {
-    dispatch(
-      getUserOrders({ accessToken: accessToken, refreshToken: refreshToken })
-    );
-  }, [dispatch, accessToken, refreshToken]);
+    dispatch(getUserOrders());
+  }, [dispatch]);
 
   let sortedOrders = [...userOrders].sort((a, b) => b.number - a.number);
 

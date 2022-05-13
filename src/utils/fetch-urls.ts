@@ -1,10 +1,14 @@
 export const BASE_URL = "https://norma.nomoreparties.space/api/";
 export const ENDPOINTS = {
-  orders_user: {
+  order: {
+    method: "POST",
+    url: `${BASE_URL}orders`,
+  },
+  ordersUser: {
     method: "GET",
     url: `${BASE_URL}orders`,
   },
-  orders_feed: {
+  ordersFeed: {
     method: "GET",
     url: `${BASE_URL}orders/feed`,
   },
@@ -20,11 +24,11 @@ export const ENDPOINTS = {
     method: "POST",
     url: `${BASE_URL}auth/logout`,
   },
-  forgot_password: {
+  forgotPassword: {
     method: "POST",
     url: `${BASE_URL}password-reset`,
   },
-  reset_password: {
+  resetPassword: {
     method: "POST",
     url: `${BASE_URL}password-reset/reset`,
   },
