@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IIngredient } from "../@type/types";
+import { IIngredient, TOrder } from "../@type/types";
 
 const modalSlice = createSlice({
   name: "modal",
@@ -7,6 +7,8 @@ const modalSlice = createSlice({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,
     isSuccessOpen: false,
+    isOrderDetailsOpen: false,
+    orderDetails: {} as TOrder,
   },
   reducers: {
     closeDetailsModal: (state) => {
@@ -22,6 +24,13 @@ const modalSlice = createSlice({
     openOrderSuccess: (state) => {
       state.isSuccessOpen = true;
     },
+    closeOrderDetailsModal: (state) => {
+      state.isOrderDetailsOpen = false;
+    },
+    openOrderDetails: (state, action: PayloadAction<TOrder>) => {
+      state.orderDetails = action.payload;
+      state.isOrderDetailsOpen = true;
+    },
   },
 });
 
@@ -30,5 +39,7 @@ export const {
   closeOrderModal,
   openIngredientDetails,
   openOrderSuccess,
+  closeOrderDetailsModal,
+  openOrderDetails,
 } = modalSlice.actions;
 export default modalSlice.reducer;
