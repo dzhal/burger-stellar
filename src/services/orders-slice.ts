@@ -15,7 +15,7 @@ const ordersSlice = createSlice({
   initialState: {
     isLoading: false,
     hasError: false,
-    orders: [] as TOrder[],
+    staticOrders: [] as TOrder[],
     total: 0,
     totalToday: 0,
   },
@@ -24,7 +24,7 @@ const ordersSlice = createSlice({
     builder.addCase(getOrdersFeed.fulfilled, (state, action) => {
       state.isLoading = false;
       state.hasError = false;
-      state.orders = action.payload.orders;
+      state.staticOrders = action.payload.orders;
       state.total = action.payload.total;
       state.totalToday = action.payload.totalToday;
     });

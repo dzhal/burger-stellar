@@ -31,14 +31,20 @@ import UserOrders from "../../pages/user-orders";
 //helpers
 import { useAppSelector, useAppDispatch } from "../../services/app-hooks";
 import { getIngredients } from "../../services/burger-ingredients-slice";
-import { closeDetailsModal, closeOrderModal } from "../../services/modal-slice";
+import {
+  closeDetailsModal,
+  closeOrderDetailsModal,
+  closeOrderModal,
+} from "../../services/modal-slice";
 import { getToken } from "../../utils/cookie-utils";
 import { getUser, setLoggedIn } from "../../services/auth-slice";
 //styles
 import style from "./app.module.css";
 import OrderDetails from "../order-detailed/order-details";
+import OrderPage from "../../pages/order-page";
 
 type LocationProps = {
+  pathname: string;
   state: {
     from?: { pathname: string };
     backgroundLocation?: Location;
@@ -55,7 +61,7 @@ function App() {
   const { isLoading, hasError } = useAppSelector(
     (store) => store.burgerIngredients
   );
-  const { isDetailsOpen, isSuccessOpen } = useAppSelector(
+  const { isDetailsOpen, isSuccessOpen, isOrderDetailsOpen } = useAppSelector(
     (store) => store.modal
   );
   const { isLoggedIn, canResetPassword } = useAppSelector(
@@ -69,13 +75,19 @@ function App() {
       dispatch(setLoggedIn(false));
     }
   }, [dispatch, token]);
-
+  //ingredients details modal
   const closeDetailsModalHandler = () => {
     dispatch(closeDetailsModal());
     navigate("/");
   };
+  //order success modal
   const closeOrderModalHandler = () => {
     dispatch(closeOrderModal());
+  };
+  //order details modal
+  const closeOrderDetailsModalHandler = () => {
+    dispatch(closeOrderDetailsModal());
+    navigate(-1);
   };
 
   return (
@@ -105,8 +117,7 @@ function App() {
           }
         />
         <Route path="feed" element={<OrdersFeed />} />
-        <Route path="feed/:id" element={<OrderDetails />} />
-        <Route path="profile/orders/:id" element={<OrderDetails />} />
+        <Route path="feed/:id" element={<OrderPage />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route
           path="/login"
@@ -143,6 +154,16 @@ function App() {
           <Route path="" element={<EditUser />} />
           <Route path="orders" element={<UserOrders />} />
         </Route>
+        <Route
+          path="/profile/orders/:id"
+          element={
+            isLoggedIn ? (
+              <OrderPage />
+            ) : (
+              <Navigate to="/login" state={{ from: location }} replace />
+            )
+          }
+        />
         <Route path="*" element={<Page404 />} />
       </Routes>
       {state?.backgroundLocation && (
@@ -155,6 +176,28 @@ function App() {
                 isModalOpen={isDetailsOpen}
                 onClose={closeDetailsModalHandler}
                 children={<IngredientDetails />}
+              />
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal
+                title=""
+                isModalOpen={isOrderDetailsOpen}
+                onClose={closeOrderDetailsModalHandler}
+                children={<OrderDetails />}
+              />
+            }
+          />
+          <Route
+            path="profile/orders/:id"
+            element={
+              <Modal
+                title=""
+                isModalOpen={isOrderDetailsOpen}
+                onClose={closeOrderDetailsModalHandler}
+                children={<OrderDetails />}
               />
             }
           />

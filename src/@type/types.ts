@@ -16,7 +16,7 @@ export interface IIngredient {
 export type TOrder = {
   _id: string;
   ingredients: string[];
-  status: string;
+  status: "created" | "pending" | "done";
   name: string;
   createdAt: string;
   updatedAt: string;

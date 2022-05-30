@@ -4,7 +4,9 @@ import { useAppSelector } from "../../services/app-hooks";
 import styles from "./orders-stat.module.css";
 
 function OrdersStat() {
-  const { total, totalToday, orders } = useAppSelector((state) => state.orders);
+  const { total, totalToday, orders } = useAppSelector(
+    (state) => state.wsOrders
+  );
   return (
     <>
       <div className={`${styles.container}`}>
@@ -19,7 +21,7 @@ function OrdersStat() {
               {orders
                 .filter((order) => order.status === "done")
                 .map((order, index) => {
-                  if (index < 12)
+                  if (index < 15)
                     return (
                       <li
                         key={order._id}
@@ -28,6 +30,7 @@ function OrdersStat() {
                         {order.number}
                       </li>
                     );
+                  return null;
                 })}
             </div>
           </div>
@@ -39,9 +42,12 @@ function OrdersStat() {
             </h2>
             <div className={styles.orders_inprogress_ids}>
               {orders
-                .filter((order) => order.status === "pending")
+                .filter(
+                  (order) =>
+                    order.status === "pending" || order.status === "created"
+                )
                 .map((order, index) => {
-                  if (index < 12)
+                  if (index < 15)
                     return (
                       <li
                         key={order._id}
@@ -50,6 +56,7 @@ function OrdersStat() {
                         {order.number}
                       </li>
                     );
+                  return null;
                 })}
             </div>
           </div>

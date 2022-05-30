@@ -1,7 +1,9 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../services/app-hooks";
+import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
+import { openOrderDetails } from "../../services/modal-slice";
+import { getOrdersFeed } from "../../services/orders-slice";
 import formatDate from "../../utils/format-date";
 //styles
 import styles from "./order-details.module.css";
@@ -16,13 +18,18 @@ type TIngredientsOrderDetails = {
 
 function OrderDetails() {
   const { id } = useParams();
-  const { orders } = useAppSelector((state) => state.orders);
+  const dispatch = useAppDispatch();
+  const { orders } = useAppSelector((state) => state.wsOrders);
   const { userOrders } = useAppSelector((state) => state.auth);
+  const { staticOrders } = useAppSelector((state) => state.orders);
   const { burgerIngredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
+  const { orderDetails } = useAppSelector((state) => state.modal);
   const order =
-    [...orders, ...userOrders].find((item) => item._id === id) || null;
+    [...orders, ...userOrders, ...staticOrders].find(
+      (item) => item._id === id
+    ) || null;
   const currentIngredients: TIngredientsOrderDetails[] =
     burgerIngredients.filter((item) => order?.ingredients.includes(item._id));
 
@@ -35,11 +42,24 @@ function OrderDetails() {
     (acc, { price, count }) => acc + price * count,
     0
   );
+  useEffect(() => {
+    dispatch(getOrdersFeed());
+  }, []);
+  useEffect(() => {
+    if (!orderDetails._id) {
+      let detailedObject = staticOrders.find((item) => item._id === id);
+      if (detailedObject) {
+        dispatch(openOrderDetails(detailedObject));
+      }
+    }
+  }, [dispatch, orderDetails, id, staticOrders]);
 
   return (
     order && (
       <div className={`${styles.container}`}>
-        <div className="text text_type_digits-default mb-10">
+        <div
+          className={`${styles.order_number} text text_type_digits-default mb-10`}
+        >
           #{order.number}
         </div>
         <div className="text text_type_main-medium mb-3">{order.name}</div>
@@ -61,6 +81,7 @@ function OrderDetails() {
                     <img
                       className={styles.order_image}
                       src={item.image_mobile}
+                      alt=""
                     />
                   </div>
                   <div className={styles.name}>{item.name}</div>

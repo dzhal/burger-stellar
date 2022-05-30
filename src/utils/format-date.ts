@@ -1,7 +1,7 @@
 const formatDate = (date: string) => {
   const msToDay = 1000 * 60 * 60 * 24;
-  const currentDate = new Date(Date.now());
   const orderDate = new Date(date);
+  const currentDate = new Date(Date.now());
   const orderHours = orderDate.getHours();
   const orderMinutes =
     orderDate.getMinutes() < 10
@@ -11,7 +11,7 @@ const formatDate = (date: string) => {
     orderDate.getTimezoneOffset() < 0
       ? `+${orderDate.getTimezoneOffset() / -60}`
       : `-${orderDate.getTimezoneOffset() / -60}`;
-  const daysDiff = Math.floor(
+  const daysDiff = Math.round(
     (Date.parse(currentDate.toString()) - Date.parse(orderDate.toString())) /
       msToDay
   );

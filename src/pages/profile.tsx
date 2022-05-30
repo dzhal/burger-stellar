@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, Outlet, useMatch } from "react-router-dom";
 import Loader from "../components/loader/loader";
 import { useAppDispatch, useAppSelector } from "../services/app-hooks";
@@ -24,6 +23,7 @@ const Profile = () => {
     } else {
       dispatch(setLoggedIn(false));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
   useEffect(() => {
@@ -31,6 +31,16 @@ const Profile = () => {
       dispatch(getUser());
     }
   }, [dispatch, accessToken, name, email]);
+
+  // useEffect(() => {
+  //   if (!wsConnected) {
+  //     dispatch({ type: WS_ORDER_ACTIONS.wsInitPerson });
+  //   }
+  //   return () => {
+  //     dispatch({ type: WS_ORDER_ACTIONS.wsClose });
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return userLoading || !name || !email ? (
     <Loader />

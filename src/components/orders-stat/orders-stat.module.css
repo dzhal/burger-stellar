@@ -19,7 +19,7 @@
 }
 .orders_ready_ids {
   width: 272px;
-  height: 152px;
+  height: 153px;
   display: flex;
   gap: 8px;
   flex-direction: column;

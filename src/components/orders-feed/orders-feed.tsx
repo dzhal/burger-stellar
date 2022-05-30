@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/app-hooks";
-import { getOrdersFeed } from "../../services/orders-slice";
+import { openOrderDetails } from "../../services/modal-slice";
+import { WS_ORDER_ACTIONS } from "../../services/ws-orders/ws-orders-slice";
 import FetchError from "../fetch-error/fetch-error";
 import Loader from "../loader/loader";
 import OrdersFeedItem from "../orders-feed-item/orders-feed-item";
@@ -9,15 +11,34 @@ import OrdersStat from "../orders-stat/orders-stat";
 import styles from "./orders-feed.module.css";
 
 function OrdersFeed() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
-  const { orders } = useAppSelector((state) => state.orders);
-  const { isLoading, hasError } = useAppSelector((state) => state.orders);
+  const { orders, wsConnected, error } = useAppSelector(
+    (state) => state.wsOrders
+  );
+  const clickHandler = (id: string) => () => {
+    let detailedObject = orders.find((item) => item._id === id);
+    if (detailedObject) {
+      navigate(`${location.pathname}/${id}`, {
+        state: { backgroundLocation: location },
+      });
+      dispatch(openOrderDetails(detailedObject));
+    }
+  };
+
   useEffect(() => {
-    dispatch(getOrdersFeed());
-  }, [dispatch]);
-  return isLoading ? (
+    dispatch({ type: WS_ORDER_ACTIONS.wsInit });
+
+    return () => {
+      dispatch({ type: WS_ORDER_ACTIONS.wsClose });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return !wsConnected ? (
     <Loader />
-  ) : hasError ? (
+  ) : error ? (
     <FetchError />
   ) : (
     <>
@@ -29,7 +50,7 @@ function OrdersFeed() {
       <div className={`${styles.container} pl-5 pr-5`}>
         <div className={`${styles.feed}`}>
           {orders.map((order) => (
-            <li key={order._id}>
+            <li key={order._id} onClick={clickHandler(order._id)}>
               <OrdersFeedItem key={order.number} status={false} order={order} />
             </li>
           ))}
