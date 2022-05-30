@@ -1,14 +1,15 @@
-import { Middleware } from "redux";
+import { Middleware, MiddlewareAPI } from "redux";
 import { getToken } from "../../utils/cookie-utils";
+import { AppDispatch, RootState } from "../store";
 
 export const socketMiddleware = (
   wsUrl: string,
   wsActions: { [key: string]: string }
 ): Middleware => {
-  return (store) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
-    return (next) => (action: any) => {
+    return (next) => (action) => {
       const { dispatch } = store;
       const accessToken = getToken("token").split(" ")[1];
       const { type } = action;
