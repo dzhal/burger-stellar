@@ -36,10 +36,8 @@ const burgerIngredientsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       getIngredients.fulfilled,
-      (state, action: PayloadAction<IIngredient[] | undefined>) => {
-        if (action.payload) {
-          state.burgerIngredients = action.payload;
-        }
+      (state, action: PayloadAction<IIngredient[]>) => {
+        state.burgerIngredients = action.payload;
         state.isLoading = false;
         state.hasError = false;
       }
