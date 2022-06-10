@@ -23,7 +23,6 @@ const IngredientsList: React.FC<IngredientProps> = ({ ingredients }) => {
       navigate(`ingredients/${detailedObject._id}`, {
         state: { backgroundLocation: location },
       });
-      console.log(location.state);
       dispatch(openIngredientDetails(detailedObject));
     }
   };
