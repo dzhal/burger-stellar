@@ -4,6 +4,7 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components/dist/
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/constructor-element";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 //components
 import { CurrencyIcon } from "../../images/currency-custom";
 import ConstructorItem from "../constructor-item/constructor-item";
@@ -52,7 +53,7 @@ function BurgerConstructor() {
   const [, refDrop] = useDrop({
     accept: "ingredient",
     drop(data: IIngredient) {
-      dispatch(addIngredient(data));
+      dispatch(addIngredient({ ...data, uuid: uuidv4() }));
     },
   });
   return (

@@ -1,3 +1,4 @@
+import { AnyAction } from "redux";
 import { IIngredient, TOrder } from "../@type/types";
 import reducer, {
   closeDetailsModal,
@@ -7,6 +8,16 @@ import reducer, {
   closeOrderDetailsModal,
   openOrderDetails,
 } from "./modal-slice";
+
+test("should return the initial state", () => {
+  expect(reducer(undefined, {} as AnyAction)).toEqual({
+    isDetailsOpen: false,
+    detailedInfo: {} as IIngredient,
+    isSuccessOpen: false,
+    isOrderDetailsOpen: false,
+    orderDetails: {} as TOrder,
+  });
+});
 test("should handle an ingredients details modal to open with data", () => {
   const previousState = {
     isDetailsOpen: false,

@@ -9,7 +9,7 @@ import "./index.css";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="/burger-stellar">
         <App />
       </BrowserRouter>
     </Provider>

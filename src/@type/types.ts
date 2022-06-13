@@ -13,6 +13,11 @@ export interface IIngredient {
   __v: number;
   uuid?: string;
 }
+export type TCountIngredients = {
+  id: string;
+  count: number;
+  type: string;
+};
 export type TOrder = {
   _id: string;
   ingredients: string[];
