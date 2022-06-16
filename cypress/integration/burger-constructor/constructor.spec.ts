@@ -12,6 +12,9 @@ describe("routing", () => {
   it("should open modal with ingredient details on click", function () {
     cy.get("li").contains("Краторная булка").click();
     cy.contains("Детали ингредиента").should("exist");
+    cy.get('*[class^="ingredient-details_name"')
+      .contains("Краторная булка")
+      .should("exist");
   });
   //check ingredient URL
   it("should open ingredient URL", () => {
