@@ -43,5 +43,5 @@ This is an educational project Yandex Practicum:
    3. Start dev project `npm start`
    4. Launch unit tests `npm test`
    5. Launch e2e test `npx cypress launch`
-   6. If you want to deploy project in not root directory, you need to add property `basename="yourPath"` to `BrowserRouter`
+   6. If you want to deploy project in not root directory, you need to add props `basename="yourPath"` to `BrowserRouter`
    7. Create build package for deploy `npm run build`
