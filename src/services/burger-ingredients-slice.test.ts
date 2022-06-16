@@ -36,13 +36,15 @@ test("should switch tab to MAIN", () => {
   });
 });
 test("should switch tab to BUN", () => {
-  const previousState = {
-    currentTab: ingredientTypes.SAUCE,
-    burgerIngredients: [] as IIngredient[],
-    isLoading: false,
-    hasError: false,
-  };
-  expect(reducer(previousState, setTab(ingredientTypes.BUN))).toEqual({
+  expect(
+    reducer(
+      {
+        ...previousState,
+        currentTab: ingredientTypes.SAUCE,
+      },
+      setTab(ingredientTypes.BUN)
+    )
+  ).toEqual({
     currentTab: ingredientTypes.BUN,
     burgerIngredients: [] as IIngredient[],
     isLoading: false,

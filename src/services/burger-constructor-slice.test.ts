@@ -125,39 +125,35 @@ test("should add sauce ingredient to burger constructor", () => {
   });
 });
 test("should add count sauce ingredient if this id already exist to burger constructor", () => {
-  const previousState = {
-    ingredientsCommon: [
-      {
-        _id: "test_id",
-        name: "test_name",
-        type: "sauce",
-        calories: 1,
-        proteins: 2,
-        fat: 3,
-        carbohydrates: 4,
-        price: 5,
-        image: "test_image",
-        image_mobile: "test_image_mobile",
-        image_large: "test_image_large",
-        __v: 1,
-        uuid: "123",
-      },
-    ],
-    ingredientBun: {} as IIngredient,
-    orderId: 0,
-    isLoading: false,
-    hasError: false,
-    countIngredients: [
-      {
-        id: "test_id",
-        count: 1,
-        type: "sauce",
-      },
-    ],
-  };
   expect(
     reducer(
-      previousState,
+      {
+        ...previousState,
+        ingredientsCommon: [
+          {
+            _id: "test_id",
+            name: "test_name",
+            type: "sauce",
+            calories: 1,
+            proteins: 2,
+            fat: 3,
+            carbohydrates: 4,
+            price: 5,
+            image: "test_image",
+            image_mobile: "test_image_mobile",
+            image_large: "test_image_large",
+            __v: 1,
+            uuid: "123",
+          },
+        ],
+        countIngredients: [
+          {
+            id: "test_id",
+            count: 1,
+            type: "sauce",
+          },
+        ],
+      },
       addIngredient({
         _id: "test_id",
         name: "test_name1",
@@ -221,52 +217,53 @@ test("should add count sauce ingredient if this id already exist to burger const
   });
 });
 test("should remove ingredient and decrease count of ingredient in burger constructor", () => {
-  const previousState = {
-    ingredientsCommon: [
+  expect(
+    reducer(
       {
-        _id: "test_id",
-        name: "test_name",
-        type: "sauce",
-        calories: 1,
-        proteins: 2,
-        fat: 3,
-        carbohydrates: 4,
-        price: 5,
-        image: "test_image",
-        image_mobile: "test_image_mobile",
-        image_large: "test_image_large",
-        __v: 1,
-        uuid: "123",
+        ...previousState,
+        ingredientsCommon: [
+          {
+            _id: "test_id",
+            name: "test_name",
+            type: "sauce",
+            calories: 1,
+            proteins: 2,
+            fat: 3,
+            carbohydrates: 4,
+            price: 5,
+            image: "test_image",
+            image_mobile: "test_image_mobile",
+            image_large: "test_image_large",
+            __v: 1,
+            uuid: "123",
+          },
+          {
+            _id: "test_id",
+            name: "test_name1",
+            type: "sauce",
+            calories: 1,
+            proteins: 2,
+            fat: 3,
+            carbohydrates: 4,
+            price: 5,
+            image: "test_image",
+            image_mobile: "test_image_mobile",
+            image_large: "test_image_large",
+            __v: 1,
+            uuid: "345",
+          },
+        ],
+        countIngredients: [
+          {
+            id: "test_id",
+            count: 2,
+            type: "sauce",
+          },
+        ],
       },
-      {
-        _id: "test_id",
-        name: "test_name1",
-        type: "sauce",
-        calories: 1,
-        proteins: 2,
-        fat: 3,
-        carbohydrates: 4,
-        price: 5,
-        image: "test_image",
-        image_mobile: "test_image_mobile",
-        image_large: "test_image_large",
-        __v: 1,
-        uuid: "345",
-      },
-    ],
-    ingredientBun: {} as IIngredient,
-    orderId: 0,
-    isLoading: false,
-    hasError: false,
-    countIngredients: [
-      {
-        id: "test_id",
-        count: 2,
-        type: "sauce",
-      },
-    ],
-  };
-  expect(reducer(previousState, removeIngredient("345"))).toEqual({
+      removeIngredient("345")
+    )
+  ).toEqual({
     ingredientsCommon: [
       {
         _id: "test_id",
@@ -298,14 +295,6 @@ test("should remove ingredient and decrease count of ingredient in burger constr
   });
 });
 test("should add order number to state", () => {
-  const previousState = {
-    ingredientsCommon: [] as IIngredient[],
-    ingredientBun: {} as IIngredient,
-    orderId: 0,
-    isLoading: false,
-    hasError: false,
-    countIngredients: [] as TCountIngredients[],
-  };
   expect(reducer(previousState, addOrder(123))).toEqual({
     ingredientsCommon: [] as IIngredient[],
     ingredientBun: {} as IIngredient,
@@ -317,53 +306,52 @@ test("should add order number to state", () => {
 });
 
 test("should move ingredient in burger constructor", () => {
-  const previousState = {
-    ingredientsCommon: [
-      {
-        _id: "test_id",
-        name: "test_name",
-        type: "sauce",
-        calories: 1,
-        proteins: 2,
-        fat: 3,
-        carbohydrates: 4,
-        price: 5,
-        image: "test_image",
-        image_mobile: "test_image_mobile",
-        image_large: "test_image_large",
-        __v: 1,
-        uuid: "123",
-      },
-      {
-        _id: "test_id",
-        name: "test_name1",
-        type: "sauce",
-        calories: 1,
-        proteins: 2,
-        fat: 3,
-        carbohydrates: 4,
-        price: 5,
-        image: "test_image",
-        image_mobile: "test_image_mobile",
-        image_large: "test_image_large",
-        __v: 1,
-        uuid: "345",
-      },
-    ],
-    ingredientBun: {} as IIngredient,
-    orderId: 0,
-    isLoading: false,
-    hasError: false,
-    countIngredients: [
-      {
-        id: "test_id",
-        count: 2,
-        type: "sauce",
-      },
-    ],
-  };
   expect(
-    reducer(previousState, moveCard({ dragIndex: 1, hoverIndex: 0 }))
+    reducer(
+      {
+        ...previousState,
+        ingredientsCommon: [
+          {
+            _id: "test_id",
+            name: "test_name",
+            type: "sauce",
+            calories: 1,
+            proteins: 2,
+            fat: 3,
+            carbohydrates: 4,
+            price: 5,
+            image: "test_image",
+            image_mobile: "test_image_mobile",
+            image_large: "test_image_large",
+            __v: 1,
+            uuid: "123",
+          },
+          {
+            _id: "test_id",
+            name: "test_name1",
+            type: "sauce",
+            calories: 1,
+            proteins: 2,
+            fat: 3,
+            carbohydrates: 4,
+            price: 5,
+            image: "test_image",
+            image_mobile: "test_image_mobile",
+            image_large: "test_image_large",
+            __v: 1,
+            uuid: "345",
+          },
+        ],
+        countIngredients: [
+          {
+            id: "test_id",
+            count: 2,
+            type: "sauce",
+          },
+        ],
+      },
+      moveCard({ dragIndex: 1, hoverIndex: 0 })
+    )
   ).toEqual({
     ingredientsCommon: [
       {

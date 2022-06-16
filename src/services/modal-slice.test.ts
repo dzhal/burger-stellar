@@ -76,13 +76,6 @@ test("should handle an ingredients details modal to close", () => {
   });
 });
 test("should handle an order success modal to open", () => {
-  const previousState = {
-    isDetailsOpen: false,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: false,
-    isOrderDetailsOpen: false,
-    orderDetails: {} as TOrder,
-  };
   expect(reducer(previousState, openOrderSuccess())).toEqual({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,
@@ -101,13 +94,6 @@ test("should handle an order success modal to close", () => {
   });
 });
 test("should handle an order details modal to open with data", () => {
-  const previousState = {
-    isDetailsOpen: false,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: false,
-    isOrderDetailsOpen: false,
-    orderDetails: {} as TOrder,
-  };
   expect(
     reducer(
       previousState,
