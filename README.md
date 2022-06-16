@@ -42,6 +42,6 @@ This is an educational project Yandex Practicum:
    2. Install all dependencies `npm install`
    3. Start dev project `npm start`
    4. Launch unit tests `npm test`
-   5. Launch e2e test `npx cypress launch`
+   5. Launch e2e test `npx cypress open`
    6. If you want to deploy project in not root directory, you need to add props `basename="yourPath"` to `BrowserRouter`
    7. Create build package for deploy `npm run build`
