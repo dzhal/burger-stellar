@@ -7,6 +7,15 @@ import reducer, {
   moveCard,
 } from "./burger-constructor-slice";
 
+const previousState = {
+  ingredientsCommon: [] as IIngredient[],
+  ingredientBun: {} as IIngredient,
+  orderId: 0,
+  isLoading: false,
+  hasError: false,
+  countIngredients: [] as TCountIngredients[],
+};
+
 test("should return the initial state", () => {
   expect(reducer(undefined, {} as AnyAction)).toEqual({
     ingredientsCommon: [] as IIngredient[],
@@ -18,14 +27,6 @@ test("should return the initial state", () => {
   });
 });
 test("should add bun ingredient to burger constructor", () => {
-  const previousState = {
-    ingredientsCommon: [] as IIngredient[],
-    ingredientBun: {} as IIngredient,
-    orderId: 0,
-    isLoading: false,
-    hasError: false,
-    countIngredients: [] as TCountIngredients[],
-  };
   expect(
     reducer(
       previousState,
@@ -73,14 +74,6 @@ test("should add bun ingredient to burger constructor", () => {
   });
 });
 test("should add sauce ingredient to burger constructor", () => {
-  const previousState = {
-    ingredientsCommon: [] as IIngredient[],
-    ingredientBun: {} as IIngredient,
-    orderId: 0,
-    isLoading: false,
-    hasError: false,
-    countIngredients: [] as TCountIngredients[],
-  };
   expect(
     reducer(
       previousState,
