@@ -1,3 +1,4 @@
+import { AnyAction } from "redux";
 import { IIngredient, TOrder } from "../@type/types";
 import reducer, {
   closeDetailsModal,
@@ -7,14 +8,25 @@ import reducer, {
   closeOrderDetailsModal,
   openOrderDetails,
 } from "./modal-slice";
-test("should handle an ingredients details modal to open with data", () => {
-  const previousState = {
+
+const previousState = {
+  isDetailsOpen: false,
+  detailedInfo: {} as IIngredient,
+  isSuccessOpen: false,
+  isOrderDetailsOpen: false,
+  orderDetails: {} as TOrder,
+};
+
+test("should return the initial state", () => {
+  expect(reducer(undefined, {} as AnyAction)).toEqual({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,
     isSuccessOpen: false,
     isOrderDetailsOpen: false,
     orderDetails: {} as TOrder,
-  };
+  });
+});
+test("should handle an ingredients details modal to open with data", () => {
   expect(
     reducer(
       previousState,
@@ -55,13 +67,6 @@ test("should handle an ingredients details modal to open with data", () => {
   });
 });
 test("should handle an ingredients details modal to close", () => {
-  const previousState = {
-    isDetailsOpen: true,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: false,
-    isOrderDetailsOpen: false,
-    orderDetails: {} as TOrder,
-  };
   expect(reducer(previousState, closeDetailsModal())).toEqual({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,
@@ -71,13 +76,6 @@ test("should handle an ingredients details modal to close", () => {
   });
 });
 test("should handle an order success modal to open", () => {
-  const previousState = {
-    isDetailsOpen: false,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: false,
-    isOrderDetailsOpen: false,
-    orderDetails: {} as TOrder,
-  };
   expect(reducer(previousState, openOrderSuccess())).toEqual({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,
@@ -87,13 +85,6 @@ test("should handle an order success modal to open", () => {
   });
 });
 test("should handle an order success modal to close", () => {
-  const previousState = {
-    isDetailsOpen: false,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: true,
-    isOrderDetailsOpen: false,
-    orderDetails: {} as TOrder,
-  };
   expect(reducer(previousState, closeOrderModal())).toEqual({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,
@@ -103,13 +94,6 @@ test("should handle an order success modal to close", () => {
   });
 });
 test("should handle an order details modal to open with data", () => {
-  const previousState = {
-    isDetailsOpen: false,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: false,
-    isOrderDetailsOpen: false,
-    orderDetails: {} as TOrder,
-  };
   expect(
     reducer(
       previousState,
@@ -140,13 +124,6 @@ test("should handle an order details modal to open with data", () => {
   });
 });
 test("should handle an order details modal to close", () => {
-  const previousState = {
-    isDetailsOpen: false,
-    detailedInfo: {} as IIngredient,
-    isSuccessOpen: false,
-    isOrderDetailsOpen: true,
-    orderDetails: {} as TOrder,
-  };
   expect(reducer(previousState, closeOrderDetailsModal())).toEqual({
     isDetailsOpen: false,
     detailedInfo: {} as IIngredient,

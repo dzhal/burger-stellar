@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 import { ingredientTypes } from "../utils/ingredientTypes";
-import { IIngredient, TGetOrderId } from "../@type/types";
-import { BASE_URL, ENDPOINTS } from "../utils/fetch-urls";
-import { checkResponse, fetchAPIwithRefresh } from "../utils/requestAPI";
+import { IIngredient, TCountIngredients, TGetOrderId } from "../@type/types";
+import { ENDPOINTS } from "../utils/fetch-urls";
+import { fetchAPIwithRefresh } from "../utils/requestAPI";
 import { getToken } from "../utils/cookie-utils";
 
 export const getOrderId = createAsyncThunk(
@@ -21,11 +20,6 @@ export const getOrderId = createAsyncThunk(
   }
 );
 
-type TCountIngredients = {
-  id: string;
-  count: number;
-  type: string;
-};
 const burgerConstructorSlice = createSlice({
   name: "constructor",
   initialState: {
@@ -46,10 +40,7 @@ const burgerConstructorSlice = createSlice({
           type: action.payload.type,
         };
       } else {
-        state.ingredientsCommon.push({
-          ...action.payload,
-          ...{ uuid: uuidv4() },
-        });
+        state.ingredientsCommon.push(action.payload);
         const ingredientToIncrementCount = state.countIngredients.find(
           (item) => item.id === action.payload._id
         );
